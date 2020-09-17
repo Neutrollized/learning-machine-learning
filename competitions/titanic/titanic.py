@@ -1,0 +1,73 @@
+#!/usr/bin/env python3
+
+import numpy as np
+import pandas as pd
+from sklearn.svm import LinearSVC
+from sklearn.ensemble import RandomForestRegressor, GradientBoostingClassifier
+from sklearn.neighbors import KNeighborsClassifier
+
+######################################################################################
+
+#-------------------
+# ingest & clean
+#-------------------
+train_data = pd.read_csv('data/train.csv')
+# printing the count for the data will let you kow if there's any missing data
+# so you know what to clean
+#print(train_data.count())
+#print(train_data.describe())
+
+# replace 'male' with 0 and 'female' with 1 in the 'Sex' column
+#train_data['Sex'].replace(
+train_data.Sex.replace(
+  to_replace=['male', 'female'],
+  value=[0, 1],
+  inplace=True)
+
+# fill the NaN ages with the mean passenger age
+train_data.Age = train_data.Age.fillna(train_data.Age.mean())
+
+#----------------------------
+# build learning model
+#----------------------------
+train_y = train_data.Survived
+
+features = ['Pclass', 'Sex', 'Age', 'SibSp', 'Parch', 'Fare']
+train_X = train_data[features]
+#print(train_X.head())
+
+train_model = GradientBoostingClassifier()
+#train_model = RandomForestRegressor()
+#train_model = KNeighborsClassifier()
+train_model.fit(train_X, train_y)
+
+#---------------------------
+# model validation
+#---------------------------
+test_data = pd.read_csv('data/test.csv')
+#print(test_data.count())
+#print(test_data.describe())
+
+# replace 'male' with 0 and 'female' with 1 in the 'Sex' column
+test_data.Sex.replace(
+  to_replace=['male', 'female'],
+  value=[0, 1],
+  inplace=True)
+
+test_data.Age = test_data.Age.fillna(test_data.Age.mean())
+test_data.Fare = test_data.Fare.fillna(test_data.Fare.mean())
+
+test_X = test_data[features]
+#print(test_X.count())
+test_predictions = train_model.predict(test_X)
+print(test_predictions)
+
+result = pd.DataFrame(
+  {
+    'PassengerId': test_data.PassengerId,
+    'Survived': test_predictions
+  },
+  columns=['PassengerId', 'Survived']
+)
+
+result.to_csv('submission.csv', index=False)
