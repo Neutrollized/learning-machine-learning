@@ -27,12 +27,16 @@ train_data.Sex.replace(
 # fill the NaN ages with the mean passenger age
 train_data.Age = train_data.Age.fillna(train_data.Age.mean())
 
+# one-hot encoding
+train_data = pd.get_dummies(train_data, prefix_sep='_', columns=['Embarked'])
+#print(train_data.head())
+
 #----------------------------
 # build learning model
 #----------------------------
 train_y = train_data.Survived
 
-features = ['Pclass', 'Sex', 'Age', 'SibSp', 'Parch', 'Fare']
+features = ['Pclass', 'Sex', 'Age', 'SibSp', 'Parch', 'Fare', 'Embarked_C', 'Embarked_Q', 'Embarked_S']
 train_X = train_data[features]
 #print(train_X.head())
 
@@ -57,6 +61,8 @@ test_data.Sex.replace(
 test_data.Age = test_data.Age.fillna(test_data.Age.mean())
 test_data.Fare = test_data.Fare.fillna(test_data.Fare.mean())
 
+test_data = pd.get_dummies(test_data, prefix_sep='_', columns=['Embarked'])
+
 test_X = test_data[features]
 #print(test_X.count())
 test_predictions = train_model.predict(test_X)
@@ -70,4 +76,4 @@ result = pd.DataFrame(
   columns=['PassengerId', 'Survived']
 )
 
-result.to_csv('submission.csv', index=False)
+result.to_csv('gender_submission.csv', index=False)
