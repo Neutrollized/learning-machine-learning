@@ -2,7 +2,7 @@
 kaggle competition
 
 ### Downloading data
-`kaggle compentions download -c titanic`
+`kaggle competitions download -c titanic`
 
 ## My thinking...
 **Sex** needs to be changed from from a string (*male*/*female*) to a number (i.e. 0 for male and 1 for female) or maybe change the column name to **isMale** with 1 for yes and 0 for no
