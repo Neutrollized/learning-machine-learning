@@ -1,5 +1,5 @@
 # Titanic: Machine Learning from Disaster
-kaggle competition
+kaggle Getting Started Prediction Competition
 
 ### Downloading data
 `kaggle competitions download -c titanic`
