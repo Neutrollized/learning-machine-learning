@@ -21,6 +21,6 @@ kaggle competition
 
 ...**Fare**!  The higher the fare price, the higher the class = more wealth = more survivability chances
 
-**Cabin** is tied with the **Pclass** as most non-class1's didn't have a cabin and hence their values are missing (**NaN**), so instead of filling them in with defaults based on their **Pclass** anyway, I'm going to leave this column out as a feature
+**Cabin** is tied with the **Pclass** as most non-class1's didn't have a cabin and hence their values are missing (*NaN*), so instead of filling them in with defaults based on their **Pclass** anyway, I'm going to leave this column out as a feature
 
 **Embarked** should have minimal impact on the survivability, but what do I know... Fortunately, it only consists of 3 values: *E*/*S*/*Q* which can be split into 3 separate columns and assinged values of 0 or 1 using [one-hot encoding](https://stackabuse.com/one-hot-encoding-in-python-with-pandas-and-scikit-learn/)
