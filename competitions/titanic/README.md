@@ -4,6 +4,14 @@ kaggle competition
 ### Downloading data
 `kaggle competitions download -c titanic`
 
+## Which model should we use?
+We should be using a classification model (more specifically a [binary classification](https://en.wikipedia.org/wiki/Binary_classification) in our case)  as we want the result to be a 0 (dead) or 1 (survived) based on the features.  Popular algorithms include (but not limited to):
+- Logistic Regression
+- k-Nearest Neighbors
+- Decision Trees
+- Support Vector Machine
+- Naive Bayes
+
 ## Features
 **PassengerID** should not be a feature
 

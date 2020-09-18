@@ -2,9 +2,13 @@
 
 import numpy as np
 import pandas as pd
-from sklearn.svm import LinearSVC
-from sklearn.ensemble import RandomForestRegressor, GradientBoostingClassifier
+from sklearn.ensemble import RandomForestClassifier, ExtraTreesClassifier, AdaBoostClassifier, GradientBoostingClassifier
+from sklearn.linear_model import LogisticRegression
 from sklearn.neighbors import KNeighborsClassifier
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.svm import SVC, LinearSVC	#support vector machine
+from sklearn.gaussian_process import GaussianProcessClassifier
+from sklearn.naive_bayes import GaussianNB
 
 ######################################################################################
 
@@ -40,9 +44,19 @@ features = ['Pclass', 'Sex', 'Age', 'SibSp', 'Parch', 'Fare', 'Embarked_C', 'Emb
 train_X = train_data[features]
 #print(train_X.head())
 
-train_model = GradientBoostingClassifier()
-#train_model = RandomForestRegressor()
-#train_model = KNeighborsClassifier()
+# gotta try them all to see which works best :|
+#train_model = RandomForestClassifier()
+#train_model = ExtraTreesClassifier()
+#train_model = AdaBoostClassifier()
+#train_model = GradientBoostingClassifier()
+#train_model = LogisticRegression()
+train_model = KNeighborsClassifier(metric='euclidean')
+#train_model = DecisionTreeClassifier()
+#train_model = SVC()
+#train_model = LinearSVC()
+#train_model = GaussianProcessClassifier()
+#train_model = GaussianNB()
+
 train_model.fit(train_X, train_y)
 
 #---------------------------
