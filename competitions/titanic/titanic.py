@@ -22,7 +22,6 @@ train_data = pd.read_csv('data/train.csv')
 #print(train_data.describe())
 
 # replace 'male' with 0 and 'female' with 1 in the 'Sex' column
-#train_data['Sex'].replace(
 train_data.Sex.replace(
   to_replace=['male', 'female'],
   value=[0, 1],
@@ -48,9 +47,9 @@ train_X = train_data[features]
 #train_model = RandomForestClassifier()
 #train_model = ExtraTreesClassifier()
 #train_model = AdaBoostClassifier()
-#train_model = GradientBoostingClassifier()
+train_model = GradientBoostingClassifier()
 #train_model = LogisticRegression()
-train_model = KNeighborsClassifier(metric='euclidean')
+#train_model = KNeighborsClassifier()
 #train_model = DecisionTreeClassifier()
 #train_model = SVC()
 #train_model = LinearSVC()
