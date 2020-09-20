@@ -21,6 +21,7 @@ melbourne_data = melbourne_data.dropna(axis=0)
 print(melbourne_data.describe)
 print(melbourne_data.describe())
 
+
 #-----------------------------
 # building learning model
 # https://scikit-learn.org/stable/modules/generated/sklearn.tree.DecisionTreeRegressor.html
@@ -43,6 +44,7 @@ print("Making predictions for the following 5 houses:")
 print(X.head())
 print("The predictions are:")
 print(melbourne_model.predict(X.head()), end='\n\n')
+
 
 #-----------------------------
 # model validation (MAE)
