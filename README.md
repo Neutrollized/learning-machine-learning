@@ -4,7 +4,7 @@
 
 `01_melbourne_model.py` improves on this:
 - using scikit's [train_test_split](https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.train_test_split.html#sklearn.model_selection.train_test_split) split training and validation data
-- `00_melbourne_model` contains training data which skews validation by reducing your error with non-training data
+- previously, testing data also contained training data which taints validation by reducing your error
 
 `02_melbourne_model.py` improves on this:
 - using [Random Forests](https://en.wikipedia.org/wiki/Random_forest) to overcome some of the overfitting/underfitting issues with Decision Trees
