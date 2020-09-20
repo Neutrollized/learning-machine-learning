@@ -19,9 +19,11 @@
 `03_melbourne_model.py` improves on this:
 - by running multiple models (with various parameters tuned) to find the best result out of those
 
-`04_melbourne_model.py` improves on this:
-- imputing the missing data rather than dropping them entirely, which increases our training data set and produce better results (note that this will run considerably longer as you have more than 2x the data over the previous versions)
+`04a_melbourne_model.py` improves on this:
+- by [imputing](https://en.wikipedia.org/wiki/Imputation_(statistics)) the missing data rather than dropping them entirely, which increases our training data set and produce better results (note that this will run considerably longer as you have more than 2x the data over the previous versions)
 
+`04b_melbourne_model.py` improves on this:
+- as an **extension to imutation**, this adds columns to your data to note which rows had missing data to help your model make better predictions as the imputed values aren't actual data and would be above/below what the actual would be
 
 ## NOTES
 - any `NaN` in the data from printing the data or via `print(data.head())`, etc. means *Not a Number* (i.e. missing data)
