@@ -21,7 +21,8 @@ print("X_full shape: {}".format(X_full.shape))
 # building learning model
 # https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestRegressor.html
 #-----------------------------
-X_full.dropna(axis=0, subset=['Price'], inplace=True)
+#X_full.dropna(axis=0, subset=['Price'], inplace=True)
+X_full.Price.dropna(axis=0, inplace=True)
 y = X_full.Price
 X_full.drop(['Price'], axis=1, inplace=True)
 
