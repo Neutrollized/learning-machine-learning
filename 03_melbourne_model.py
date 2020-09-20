@@ -12,11 +12,13 @@ from sklearn.metrics import mean_absolute_error
 # https://www.kaggle.com/dansbecker/melbourne-housing-snapshot/download
 #---------------------
 melbourne_file_path = 'data/melb_data.csv'
-melbourne_data = pd.read_csv(melbourne_file_path)
+X_full = pd.read_csv(melbourne_file_path)
 
 # drop data with missing values
-# https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.dropna.html
-melbourne_data = melbourne_data.dropna(axis=0)
+X_reduced = X_full.dropna(axis=0)
+
+print("X_full shape: {}".format(X_full.shape))
+print("X_reduced shape: {}".format(X_reduced.shape))
 
 
 #-----------------------------
@@ -24,14 +26,15 @@ melbourne_data = melbourne_data.dropna(axis=0)
 # https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestRegressor.html
 #-----------------------------
 # setting the prediction target (traditionally labeled 'y')
-y = melbourne_data.Price
+y = X_reduced.Price
 
 # choosing the training features (traditionally labeled 'X')
 features = ['Rooms', 'Bathroom', 'Landsize', 'Lattitude', 'Longtitude']
-X = melbourne_data[features]
+X = X_reduced[features]
 
 # split training/validation data
 train_X, val_X, train_y, val_y = train_test_split(X, y, random_state=0)
+print("train_X shape: {}".format(train_X.shape), end='\n\n')
 
 
 #------------------------------
@@ -45,16 +48,15 @@ model_5 = RandomForestRegressor(n_estimators=100, max_depth=7, random_state=0)
 
 models = [model_1, model_2, model_3, model_4, model_5]
 
-def score_model(model, X_t=train_X, X_v=val_X, y_t=train_y, y_v=val_y):
-    model.fit(X_t, y_t)
-    preds = model.predict(X_v)
-    return mean_absolute_error(y_v, preds)
+def score_model(model, tX=train_X, vX=val_X, ty=train_y, vy=val_y):
+    model.fit(tX, ty)
+    preds = model.predict(vX)
+    return mean_absolute_error(vy, preds)
 
 model_mae_dict = {}
 
 for i in range(len(models)):
-    #mae = score_model(models[i])
-    #print("model_{} MAE: {:.2f}".format(i+1, mae))
+    print("Running model_{}...".format(i+1))
     model_mae_dict[models[i]] = score_model(models[i])
 
 # assign the model(key) of the lowest MAE(value) to melbourne_model

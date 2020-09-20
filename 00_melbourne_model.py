@@ -11,15 +11,24 @@ from sklearn.metrics import mean_absolute_error
 # https://www.kaggle.com/dansbecker/melbourne-housing-snapshot/download
 #---------------------
 melbourne_file_path = 'data/melb_data.csv'
-melbourne_data = pd.read_csv(melbourne_file_path)
-print(melbourne_data.columns, end='\n\n')
+X_full = pd.read_csv(melbourne_file_path)
+
+# print Column headings
+print(X_full.columns, end='\n\n')
 
 # drop data with missing values
 # https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.dropna.html
-melbourne_data = melbourne_data.dropna(axis=0)
+X_reduced = X_full.dropna(axis=0)
 
-print(melbourne_data.describe)
-print(melbourne_data.describe())
+print(X_reduced.describe)
+print(X_reduced.describe())
+
+print("Before dropping data with missing values: {}".format(X_full.shape))
+# Number of missing values in each column of training data
+missing_val_count_by_column = (X_full.isnull().sum())
+print(missing_val_count_by_column[missing_val_count_by_column > 0], end='\n\n')
+
+print("After dropping data with missing values: {}".format(X_reduced.shape), end='\n\n')
 
 
 #-----------------------------
@@ -27,11 +36,11 @@ print(melbourne_data.describe())
 # https://scikit-learn.org/stable/modules/generated/sklearn.tree.DecisionTreeRegressor.html
 #-----------------------------
 # setting the prediction target (traditionally labeled 'y')
-y = melbourne_data.Price
+y = X_reduced.Price
 
 # choosing the training features (traditionally labeled 'X')
 features = ['Rooms', 'Bathroom', 'Landsize', 'Lattitude', 'Longtitude']
-X = melbourne_data[features]
+X = X_reduced[features]
 
 # good habit to manually inspect some of the data
 X.describe()
