@@ -1,5 +1,12 @@
 # README
 
+## Common ML Methods
+- **Regression** is a form of *supervised* machine learning that is used to predict a numeric label based on an item's features. For example, an automobile sales company might use the characteristics of car (such as engine size, number of seats, mileage, and so on) to predict its likely selling price. In this case, the characteristics of the car are the features, and the selling price is the label.
+- **Classification** is a form of *supervised* machine learning that is used to predict which category, or class, an item belongs to. For example, a health clinic might use the characteristics of a patient (such as age, weight, blood pressure, and so on) to predict whether the patient is at risk of diabetes. In this case, the characteristics of the patient are the features, and the label is a classification of either 0 or 1, representing non-diabetic or diabetic.
+- **Clustering** is a form of *unsupervised* machine learning that is used to group similar items into clusters based on their features. For example, a researcher might take measurements of penguins, and group them based on similarities in their proportions.
+
+
+## Examples
 `00_melbourne_model.py` contains a very simple data ingestion, build model and validation
 
 `01_melbourne_model.py` improves on this:
@@ -18,6 +25,4 @@
 
 ## NOTES
 - any `NaN` in the data from printing the data or via `print(data.head())`, etc. means *Not a Number* (i.e. missing data)
-- **Regression** is a form of *supervised* machine learning that is used to predict a numeric label based on an item's features. For example, an automobile sales company might use the characteristics of car (such as engine size, number of seats, mileage, and so on) to predict its likely selling price. In this case, the characteristics of the car are the features, and the selling price is the label.
-- **Classification** is a form of *supervised* machine learning that is used to predict which category, or class, an item belongs to. For example, a health clinic might use the characteristics of a patient (such as age, weight, blood pressure, and so on) to predict whether the patient is at risk of diabetes. In this case, the characteristics of the patient are the features, and the label is a classification of either 0 or 1, representing non-diabetic or diabetic.
-- **Clustering** is a form of *unsupervised* machine learning that is used to group similar items into clusters based on their features. For example, a researcher might take measurements of penguins, and group them based on similarities in their proportions.
+
