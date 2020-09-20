@@ -18,6 +18,7 @@ melbourne_data = pd.read_csv(melbourne_file_path)
 # https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.dropna.html
 melbourne_data = melbourne_data.dropna(axis=0)
 
+
 #-----------------------------
 # building learning model
 # https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestRegressor.html
@@ -31,6 +32,7 @@ X = melbourne_data[features]
 
 # split training/validation data
 train_X, val_X, train_y, val_y = train_test_split(X, y, random_state=0)
+
 
 #------------------------------
 # evaluate serveral models
