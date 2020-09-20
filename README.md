@@ -9,6 +9,10 @@
 `02_melbourne_model.py` improves on this:
 - using [Random Forests](https://en.wikipedia.org/wiki/Random_forest) to overcome some of the overfitting/underfitting issues with Decision Trees
 
+`03_melbourne_model.py` improves on this:
+- by running multiple models (with various parameters tuned) to find the best result out of those
+
+
 ## NOTES
 - any `NaN` in the data from printing the data or via `print(data.head())`, etc. means *Not a Number* (i.e. missing data)
 - **Regression** is a form of *supervised* machine learning that is used to predict a numeric label based on an item's features. For example, an automobile sales company might use the characteristics of car (such as engine size, number of seats, mileage, and so on) to predict its likely selling price. In this case, the characteristics of the car are the features, and the selling price is the label.
