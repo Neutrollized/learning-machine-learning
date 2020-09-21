@@ -15,6 +15,7 @@ from sklearn.metrics import mean_absolute_error
 melbourne_file_path = 'data/melb_data.csv'
 X_full = pd.read_csv(melbourne_file_path)
 
+# https://stackoverflow.com/questions/55776571/how-to-split-a-date-column-into-separate-day-month-year-column-in-pandas/55776634
 X_full.Date = pd.to_datetime(X_full.Date, infer_datetime_format=True)
 X_full['Date_Month'] = X_full['Date'].dt.month
 X_full['Date_Year'] = X_full['Date'].dt.year
