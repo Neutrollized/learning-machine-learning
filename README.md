@@ -26,6 +26,11 @@
 `04b_melbourne_model.py` improves on this:
 - using an **extension to imutation**, this adds columns to your data to note which rows had missing data to help your model make better predictions as the imputed values aren't actual data and would be above/below what the actual would be
 
+`05_melbourne_model.py` improves on this:
+- taking the **Date** column value of *M/DD/YYYY* and turn it into 2 columns called **Date_Month** and **Date_Year**
+- this will split the categorical **Date** column into 2 numerical columns to be interpretty separately 
+
+
 ## NOTES
 - any `NaN` in the data from printing the data or via `print(data.head())`, etc. means *Not a Number* (i.e. missing data)
 

@@ -14,7 +14,13 @@ from sklearn.metrics import mean_absolute_error
 #---------------------
 melbourne_file_path = 'data/melb_data.csv'
 X_full = pd.read_csv(melbourne_file_path)
+
+X_full.Date = pd.to_datetime(X_full.Date, infer_datetime_format=True)
+X_full['Date_Month'] = X_full['Date'].dt.month
+X_full['Date_Year'] = X_full['Date'].dt.year
+X_full.drop(['Date'], axis=1, inplace=True)
 print("X_full shape: {}".format(X_full.shape))
+#X_full.to_csv('sample.csv', index=True)
 
 
 #-----------------------------

@@ -9,6 +9,7 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.svm import SVC, LinearSVC	#support vector machine
 from sklearn.gaussian_process import GaussianProcessClassifier
 from sklearn.naive_bayes import GaussianNB
+from xgboost import XGBClassifier
 
 ######################################################################################
 
@@ -47,7 +48,7 @@ train_X = train_data[features]
 #train_model = RandomForestClassifier()
 #train_model = ExtraTreesClassifier()
 #train_model = AdaBoostClassifier()
-train_model = GradientBoostingClassifier()
+#train_model = GradientBoostingClassifier()
 #train_model = LogisticRegression()
 #train_model = KNeighborsClassifier()
 #train_model = DecisionTreeClassifier()
@@ -55,6 +56,7 @@ train_model = GradientBoostingClassifier()
 #train_model = LinearSVC()
 #train_model = GaussianProcessClassifier()
 #train_model = GaussianNB()
+train_model = XGBClassifier()
 
 train_model.fit(train_X, train_y)
 

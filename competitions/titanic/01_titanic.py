@@ -10,6 +10,7 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.svm import SVC, LinearSVC	#support vector machine
 from sklearn.gaussian_process import GaussianProcessClassifier
 from sklearn.naive_bayes import GaussianNB
+from xgboost import XGBClassifier
 
 ######################################################################################
 
@@ -71,6 +72,7 @@ train_model = GradientBoostingClassifier()
 #train_model = LinearSVC()
 #train_model = GaussianProcessClassifier()
 #train_model = GaussianNB()
+#train_model = XGBClassifier()	#errors out...? :(
 
 train_model.fit(imputed_train_X, train_y)
 
