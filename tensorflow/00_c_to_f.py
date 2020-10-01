@@ -38,6 +38,10 @@ plt.xlabel('Epoch Number')
 plt.ylabel('Loss Magnitude')
 plt.plot(history.history['loss'])
 
+# display the plot (you don't need this if it was in a notebook)
+plt.show()
+
 print(model.predict([100.0]))
 
 print("These are the layer variables: {}".format(layer0.get_weights()))
+
