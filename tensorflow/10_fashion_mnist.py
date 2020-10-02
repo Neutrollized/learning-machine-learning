@@ -27,6 +27,7 @@ num_test_examples = metadata.splits['test'].num_examples
 print("Number of training examples: {}".format(num_train_examples))
 print("Number of test examples:     {}".format(num_test_examples))
 
+'''
 #--------------------------------------
 # preprocess the data
 #--------------------------------------
@@ -191,3 +192,4 @@ plot_value_array(0, predictions_single, test_labels)
 _ = plt.xticks(range(10), class_names, rotation=45)
 
 np.argmax(predictions_single[0])
+'''
