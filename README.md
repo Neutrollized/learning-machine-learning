@@ -1,4 +1,5 @@
 # README
+If you have any Jupyter notebooks (*.ipynb) files that you want to convert to other formats (i.e. python), use the [nbconvert](https://github.com/jupyter/nbconvert) tool from Jupyter.
 
 ## Common ML Methods
 - **Regression** is a form of *supervised* machine learning that is used to predict a numeric label based on an item's features. For example, an automobile sales company might use the characteristics of car (such as engine size, number of seats, mileage, and so on) to predict its likely selling price. In this case, the characteristics of the car are the features, and the selling price is the label.
@@ -33,4 +34,3 @@
 
 ## NOTES
 - any `NaN` in the data from printing the data or via `print(data.head())`, etc. means *Not a Number* (i.e. missing data)
-
