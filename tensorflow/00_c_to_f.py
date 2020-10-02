@@ -23,6 +23,7 @@ for i,c in enumerate(celsius_q):
 layer0 = tf.keras.layers.Dense(units=1, input_shape=[1])
 model = tf.keras.Sequential([layer0])
 
+# Adam stands for "ADAptive with Momentum"
 model.compile(loss='mean_squared_error',
               optimizer=tf.keras.optimizers.Adam(0.1))
 
