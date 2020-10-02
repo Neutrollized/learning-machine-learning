@@ -45,4 +45,3 @@ plt.show()
 print(model.predict([100.0]))
 
 print("These are the layer variables: {}".format(layer0.get_weights()))
-
