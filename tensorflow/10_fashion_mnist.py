@@ -27,10 +27,10 @@ num_test_examples = metadata.splits['test'].num_examples
 print("Number of training examples: {}".format(num_train_examples))
 print("Number of test examples:     {}".format(num_test_examples))
 
-'''
 #--------------------------------------
 # preprocess the data
 #--------------------------------------
+# normalize the value of each px to be in the range of [0,1] rather than [0,255]
 def normalize(images, labels):
   images = tf.cast(images, tf.float32)
   images /= 255
@@ -93,6 +93,8 @@ BATCH_SIZE = 32
 train_dataset = train_dataset.cache().repeat().shuffle(num_train_examples).batch(BATCH_SIZE)
 test_dataset = test_dataset.cache().batch(BATCH_SIZE)
 
+# epoch is the number of complete passes through the training set
+# more passes = better accuracy, but requires more training time, obvs
 model.fit(train_dataset, epochs=5, steps_per_epoch=math.ceil(num_train_examples/BATCH_SIZE))
 
 #--------------------------------------
@@ -110,10 +112,10 @@ for test_images, test_labels in test_dataset.take(1):
   predictions = model.predict(test_images)
 
 
-predictions.shape
-predictions[0]
-np.argmax(predictions[0])
-test_labels[0]
+print(predictions.shape)
+print(predictions[0])
+print(np.argmax(predictions[0]))	# prediction from test image
+print(test_labels[0])			# actual from test image
 
 
 def plot_image(i, predictions_array, true_labels, images):
@@ -154,6 +156,7 @@ plt.subplot(1,2,1)
 plot_image(i, predictions, test_labels, test_images)
 plt.subplot(1,2,2)
 plot_value_array(i, predictions, test_labels)
+plt.show()
 
 
 i = 12
@@ -162,6 +165,7 @@ plt.subplot(1,2,1)
 plot_image(i, predictions, test_labels, test_images)
 plt.subplot(1,2,2)
 plot_value_array(i, predictions, test_labels)
+plt.show()
 
 
 # Plot the first X test images, their predicted label, and the true label
@@ -175,6 +179,7 @@ for i in range(num_images):
   plot_image(i, predictions, test_labels, test_images)
   plt.subplot(num_rows, 2*num_cols, 2*i+2)
   plot_value_array(i, predictions, test_labels)
+plt.show()
 
 
 # Grab an image from the test dataset
@@ -190,6 +195,6 @@ print(predictions_single)
 
 plot_value_array(0, predictions_single, test_labels)
 _ = plt.xticks(range(10), class_names, rotation=45)
+plt.show()
 
-np.argmax(predictions_single[0])
-'''
+print(np.argmax(predictions_single[0]))
