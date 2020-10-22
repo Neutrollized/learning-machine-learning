@@ -20,6 +20,8 @@ If you're running these from a MacOS (as I am) or Linux, you will need to compil
 - loss: Sparse categorical crossentropy
 - last layer activation fucntion: Softmax
 
+Here's a good [CNN primer](https://towardsdatascience.com/a-comprehensive-guide-to-convolutional-neural-networks-the-eli5-way-3bd2b1164a53) used in one of the variations of this classification example
+
 #### Exercises
 Try the following settings to see the impact of it on the results/accuracy:
 - set epochs = 1

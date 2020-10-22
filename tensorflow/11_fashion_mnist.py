@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 
-######################################################
+###########################################################
 #
-# Fashion MNIST with CNNs
+# Fashion MNIST with Convolution Neural Networks (CNNs)
 #
-######################################################
+###########################################################
 
 import tensorflow as tf
 import tensorflow_datasets as tfds
