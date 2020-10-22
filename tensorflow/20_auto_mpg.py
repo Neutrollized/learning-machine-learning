@@ -129,7 +129,8 @@ class PrintDot(keras.callbacks.Callback):
 EPOCHS = 1000
 
 # https://www.tensorflow.org/api_docs/python/tf/keras/callbacks/EarlyStopping
-# stops training the model when there's little to no improvement (or worse -- degredation) in validation error
+# early stopping is used to help deal with over-fitting by
+# stopping training of the model when there's little to no improvement (or worse -- degredation) in validation error
 EARLY_STOP = keras.callbacks.EarlyStopping(monitor='val_loss', patience=10)
 
 history = model.fit(
