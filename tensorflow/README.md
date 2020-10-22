@@ -16,6 +16,7 @@ If you're running these from a MacOS (as I am) or Linux, you will need to compil
 
 
 ## 1x - Fashion MNIST (Classification)
+Uses greyscale images of the same size
 - output: Probability distribution of its confidence of a certain class
 - loss: Sparse categorical crossentropy
 - last layer activation fucntion: Softmax
@@ -30,5 +31,10 @@ Try the following settings to see the impact of it on the results/accuracy:
 - don't normalize px values 
 
 
-## 2x - [Auto MPG](https://www.youtube.com/watch?v=-vHQub0NXI4&ab_channel=TensorFlow)
+## 2x - Auto MPG
+[YouTube link](https://www.youtube.com/watch?v=-vHQub0NXI4&ab_channel=TensorFlow)
 
+## 3x - Cats & Dogs (Classification...in color!)
+This is where CNNs shine because it can split/isolate the image by color (RGB).  Here we use color images of various sizes, so here we will resize all the images and each.  
+
+For greyscale images (e.g. of size 20px x 20px), it is represented by an array of (20, 20, 1) for (width, height, greyscale), where as for a color image of the same size, it would be represented by an array of (20, 20, 3) for (width, height, red, green, blue)

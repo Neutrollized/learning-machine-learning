@@ -34,3 +34,4 @@ If you have any Jupyter notebooks (*.ipynb) files that you want to convert to ot
 
 ## NOTES
 - any `NaN` in the data from printing the data or via `print(data.head())`, etc. means *Not a Number* (i.e. missing data)
+- overfitting a the result of having to few weights -- leading to a limit of how much it can learn -- and then it has to base its results from this (which is biased) and could then give you the wrong results hence why **data cleaning** is so important
