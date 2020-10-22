@@ -1,4 +1,5 @@
 # README
+If you're running these from a MacOS (as I am) or Linux, you will need to compile your own TensorFlow as the default package you install via pip currently won't have a lot of CPU extensions that will speed up your CPU-only training.  I have outlined some of the steps I took to compiling my own **[here]**(https://gist.github.com/Neutrollized/6a409146fcf02438852c27633a031d0f)
 
 ## Dependencies
 - **tensorflow** (it will install other package requirements, including **numpy**)

@@ -102,9 +102,82 @@ def build_model():
   ])
 
   # https://keras.io/api/optimizers/rmsprop/
+  OPTIMIZER = tf.keras.optimizers.RMSprop(0.001)
+
   model.compile(loss='mse',
-                optimizer = tf.keras.optimizers.RMSprop(0.001),
+                optimizer=OPTIMIZER,
                 metrics=['mae', 'mse'])
   return model
 
 model = build_model()
+print(model.summary())
+
+example_batch = normed_train_data[:10]
+example_result = model.predict(example_batch)
+print(example_result)
+
+
+#-------------------------
+# train the model
+#-------------------------
+
+class PrintDot(keras.callbacks.Callback):
+  def on_epoch_end(self, epoch, logs):
+    if epoch % 100 == 0: print('')
+    print('.', end='')
+
+EPOCHS = 1000
+
+# https://www.tensorflow.org/api_docs/python/tf/keras/callbacks/EarlyStopping
+# stops training the model when there's little to no improvement (or worse -- degredation) in validation error
+EARLY_STOP = keras.callbacks.EarlyStopping(monitor='val_loss', patience=10)
+
+history = model.fit(
+  normed_train_data, train_labels,
+  epochs=EPOCHS, validation_split = 0.2, verbose=0,
+  #callbacks=[PrintDot()]	# use this callback instead to have it finish the EPOCHS every time
+  callbacks=[EARLY_STOP, PrintDot()]
+)
+
+print('')
+hist = pd.DataFrame(history.history)
+hist['epoch'] = history.epoch
+print(hist.tail())
+
+def plot_loss(history):
+  plt.plot(history.history['loss'], label='loss')
+  plt.plot(history.history['val_loss'], label='val_loss')
+  plt.ylim([0, 10])
+  plt.xlabel('Epoch')
+  plt.ylabel('Error [MPG]')
+  plt.legend()
+  plt.grid(True)
+  plt.show()
+
+plot_loss(history)
+
+loss, mae, mse = model.evaluate(normed_test_data, test_labels, verbose=0)
+print("Testing set Mean Abs Error: {:5.2f} MGP".format(mae))
+
+
+#------------------------
+# make predictions
+#------------------------
+
+test_predictions = model.predict(normed_test_data).flatten()
+
+plt.scatter(test_labels, test_predictions)
+plt.xlabel('True Values [MPG]')
+plt.ylabel('Predictions [MPG]')
+plt.axis('equal')
+plt.axis('square')
+plt.xlim([0,plt.xlim()[1]])
+plt.ylim([0,plt.ylim()[1]])
+_ = plt.plot([-100, 100], [-100, 100])
+plt.show()
+
+error = test_predictions - test_labels
+plt.hist(error, bins = 25)
+plt.xlabel("Prediction Error [MPG]")
+_ = plt.ylabel("Count")
+plt.show()
