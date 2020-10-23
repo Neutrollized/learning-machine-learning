@@ -4,9 +4,10 @@ If you're running these from a MacOS (as I am) or Linux, you will need to compil
 ## Dependencies
 - **tensorflow** (it will install other package requirements, including **numpy**)
 - **matplot**
+- [**tensorflow-datasets**](https://blog.tensorflow.org/2019/02/introducing-tensorflow-datasets.html)
 - [**seaborn**](https://seaborn.pydata.org/) (Auto MPG example)
 
-`pip3 install tensorflow matplot seaborn`
+`pip3 install tensorflow matplot tensorflow-datasets seaborn`
 
 
 ## 0x - Celcius to Fahrenheit (Regression)
@@ -37,4 +38,4 @@ Try the following settings to see the impact of it on the results/accuracy:
 ## 3x - Cats & Dogs (Classification...in color!)
 This is where CNNs shine because it can split/isolate the image by color (RGB).  Here we use color images of various sizes, so here we will resize all the images and each.  
 
-For greyscale images (e.g. of size 20px x 20px), it is represented by an array of (20, 20, 1) for (width, height, greyscale), where as for a color image of the same size, it would be represented by an array of (20, 20, 3) for (width, height, red, green, blue)
+For greyscale images (e.g. of size 20px x 20px), it is represented by an array of (20, 20, 1) for (height, width, color channels), where as for a color image of the same size, it would be represented by an array of (20, 20, 3) for  because the number color channels is now 3 (R/G/B) instead of 1 (greyscale)
