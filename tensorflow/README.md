@@ -39,3 +39,9 @@ Try the following settings to see the impact of it on the results/accuracy:
 This is where CNNs shine because it can split/isolate the image by color (RGB).  Here we use color images of various sizes, so here we will resize all the images and each.  
 
 For greyscale images (e.g. of size 20px x 20px), it is represented by an array of (20, 20, 1) for (height, width, color channels), where as for a color image of the same size, it would be represented by an array of (20, 20, 3) for  because the number color channels is now 3 (R/G/B) instead of 1 (greyscale)
+
+Uses [Keras Preprocessing ImageDataGenerator](https://www.tensorflow.org/api_docs/python/tf/keras/preprocessing/image/ImageDataGenerator) to handle the following data prep actions:
+- read images from disk
+- decode image content & convert into proper grid format as per RGB content
+- convert to floating point tensors
+- rescale tensors from (0, 255) to (0, 1) as neural networks prefer to deal with smaller input values (i.e. normalizing)
