@@ -4,6 +4,7 @@
 #
 # Cats & Dogs with (Color) CNNs
 # with Image Augmentation
+# and Dropout
 #
 #######################################################
 
@@ -143,15 +144,19 @@ plotImages(augmented_images)
 
 model = tf.keras.models.Sequential([
   tf.keras.layers.Conv2D(32, (3,3), activation='relu', input_shape=(150, 150, 3)),
+  tf.keras.layers.SpatialDropout2D(0.2),
   tf.keras.layers.MaxPooling2D(2, 2),
 
   tf.keras.layers.Conv2D(64, (3,3), activation='relu'),
+  tf.keras.layers.SpatialDropout2D(0.2),
   tf.keras.layers.MaxPooling2D(2, 2),
 
   tf.keras.layers.Conv2D(128, (3,3), activation='relu'),
+  tf.keras.layers.SpatialDropout2D(0.2),
   tf.keras.layers.MaxPooling2D(2, 2),
 
   tf.keras.layers.Conv2D(128, (3,3), activation='relu'),
+  tf.keras.layers.SpatialDropout2D(0.2),
   tf.keras.layers.MaxPooling2D(2, 2),
 
   tf.keras.layers.Flatten(),
@@ -170,11 +175,7 @@ print(model.summary())
 # train model
 #-------------------------
 
-#EPOCHS = 100
-
-# in this version, you will see that val_acc grows together with train_acc until about the ~65 epochs mark
-# but you'll be getting much better results given now that you have augmented images to train on
-EPOCHS = 80
+EPOCHS = 100
 
 history = model.fit_generator(
   train_data_gen,
@@ -203,5 +204,5 @@ plt.plot(epochs_range, loss, label='Training Loss')
 plt.plot(epochs_range, val_loss, label='Validation Loss')
 plt.legend(loc='upper right')
 plt.title('Training and Validation Loss')
-plt.savefig('./31_plot.png')
+plt.savefig('./34_plot.png')
 plt.show()
