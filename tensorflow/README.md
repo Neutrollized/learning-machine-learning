@@ -47,7 +47,7 @@ Uses [Keras Preprocessing ImageDataGenerator](https://www.tensorflow.org/api_doc
 - rescale tensors from (0, 255) to (0, 1) as neural networks prefer to deal with smaller input values (i.e. normalizing)
 
 ### Reducing Over-fitting in Image Classification
-A sign of over-fitting can be see when training accuracy continues to improve while validation accuracy tapers/levels of after some number of epochs (you can see this in the various *3x_plot.png*s where the training and validation accuracy diverges).  This means that the neural network is memorizing the images and not generalizing enough. 
+A sign of over-fitting can be see when training accuracy continues to improve while validation accuracy tapers/levels of after some number of epochs (you can see this in the various *3x_plot.png*s where the training and validation accuracy diverges).  This means that the neural net is memorizing the images and not generalizing enough.  More techniques doesn't necessarily mean better as you can see from the plots that CNNs with Image Augmentation provided the best model.
 
 #### Image Augmentation
 One way you can improve on this is to have various types of images of your subject (i.e. dog at different angles/zoom levels).  If you *don't* have the luxury of a large dataset with a wealth of types of images, then you can consider [**image augmentation**](https://www.tensorflow.org/tutorials/images/data_augmentation) to apply random transformations to your images such as:
