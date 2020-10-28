@@ -3,6 +3,7 @@
 #######################################################
 #
 # Cats & Dogs with (Color) CNNs
+# with Image Augmentation
 #
 #######################################################
 
@@ -64,23 +65,6 @@ print("Total validation images:", total_val)
 BATCH_SIZE = 100
 IMG_SHAPE  = 150
 
-train_image_generator      = ImageDataGenerator(rescale=1./255)
-validation_image_generator = ImageDataGenerator(rescale=1./255)
-
-train_data_gen = train_image_generator.flow_from_directory(batch_size=BATCH_SIZE,
-                                                           directory=train_dir,
-                                                           shuffle=True,
-                                                           target_size=(IMG_SHAPE,IMG_SHAPE), # 150x150
-                                                           class_mode='binary')
-
-val_data_gen = validation_image_generator.flow_from_directory(batch_size=BATCH_SIZE,
-                                                              directory=validation_dir,
-                                                              shuffle=False,
-                                                              target_size=(IMG_SHAPE,IMG_SHAPE), # 150x150
-                                                              class_mode='binary')
-
-sample_training_images, _ = next(train_data_gen)
-
 def plotImages(images_arr):
   fig, axes = plt.subplots(1, 5, figsize=(10,10))
   axes = axes.flatten()
@@ -89,7 +73,68 @@ def plotImages(images_arr):
   plt.tight_layout()
   plt.show()
 
-plotImages(sample_training_images[:5]) # plot images 0-4
+
+'''
+#--------------------------------
+# image augmentation examples
+#--------------------------------
+
+# flip
+image_gen        = ImageDataGenerator(rescale=1./255, horizontal_flip=True)
+train_data_gen   = image_gen.flow_from_directory(batch_size=BATCH_SIZE,
+                                                 directory=train_dir,
+                                                 shuffle=True,
+                                                 target_size=(IMG_SHAPE,IMG_SHAPE))
+augmented_images = [train_data_gen[0][0][0] for i in range(5)]
+plotImages(augmented_images)
+
+# rotate
+image_gen        = ImageDataGenerator(rescale=1./255, rotation_range=45)
+train_data_gen   = image_gen.flow_from_directory(batch_size=BATCH_SIZE,
+                                                 directory=train_dir,
+                                                 shuffle=True,
+                                                 target_size=(IMG_SHAPE,IMG_SHAPE))
+augmented_images = [train_data_gen[0][0][0] for i in range(5)]
+plotImages(augmented_images)
+
+# zoom
+image_gen        = ImageDataGenerator(rescale=1./255, zoom_range=0.5)
+train_data_gen   = image_gen.flow_from_directory(batch_size=BATCH_SIZE,
+                                                 directory=train_dir,
+                                                 shuffle=True,
+                                                 target_size=(IMG_SHAPE,IMG_SHAPE))
+augmented_images = [train_data_gen[0][0][0] for i in range(5)]
+plotImages(augmented_images)
+'''
+
+# applying all sorts of augmentations 
+image_gen_train = ImageDataGenerator(
+  rescale=1./255,
+  rotation_range=40,
+  width_shift_range=0.2,
+  height_shift_range=0.2,
+  shear_range=0.2,
+  zoom_range=0.2,
+  horizontal_flip=True,
+  fill_mode='nearest'
+)
+
+train_data_gen = image_gen_train.flow_from_directory(batch_size=BATCH_SIZE,
+                                                     directory=train_dir,
+                                                     shuffle=True,
+                                                     target_size=(IMG_SHAPE,IMG_SHAPE),
+                                                     class_mode='binary')
+
+image_gen_val = ImageDataGenerator(rescale=1./255)
+
+val_data_gen = image_gen_val.flow_from_directory(batch_size=BATCH_SIZE,
+                                                 directory=validation_dir,
+                                                 shuffle=False,
+                                                 target_size=(IMG_SHAPE,IMG_SHAPE),
+                                                 class_mode='binary')
+
+augmented_images = [train_data_gen[0][0][0] for i in range(5)]
+plotImages(augmented_images)
 
 
 #-------------------------------
@@ -126,9 +171,10 @@ print(model.summary())
 #-------------------------
 
 #EPOCHS = 100
-# you can run it at 100 epochs, but you will see that the val_acc flattens at around 76% after ~20
-# this is a clear sign of over-fitting
-EPOCHS = 25
+
+# in this version, you will see that val_acc grows together with train_acc until about the ~65 epochs mark
+# but you'll be getting much better results given now that you have augmented images to train on
+EPOCHS = 80
 
 history = model.fit_generator(
   train_data_gen,

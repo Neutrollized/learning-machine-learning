@@ -45,3 +45,21 @@ Uses [Keras Preprocessing ImageDataGenerator](https://www.tensorflow.org/api_doc
 - decode image content & convert into proper grid format as per RGB content
 - convert to floating point tensors
 - rescale tensors from (0, 255) to (0, 1) as neural networks prefer to deal with smaller input values (i.e. normalizing)
+
+### Reducing Over-fitting in Image Classification
+A sign of over-fitting can be see when training accuracy continues to improve while validation accuracy tapers/levels of after some number of epochs.  This means that the neural network is memorizing the images and not generalizing enough. 
+
+#### Image Augmentation
+One way you can improve on this is to have various types of images of your subject (i.e. dog at different angles/zoom levels).  If you *don't* have the luxury of a large dataset with a wealth of types of images, then you can consider [**image augmentation**](https://www.tensorflow.org/tutorials/images/data_augmentation) to apply random transformations to your images such as:
+- rotate
+- flip
+- zoom
+- ...
+
+This will give your CNN a better chance a learning to generalize better if it has see more examples (even if some of these examples are just augmentations of ones it has already seen)
+
+#### Dropout
+With each pass through the epoch, the weights and biases in each neuron is adjusted, but some might be used more and adjusted more while others are used less, and over time, the neurons with the heavier weights and biases influence the overall outcome of the training more than others.
+
+The way dropout solves this is by randomly turning off neurons with each pass and thereby giving the other neurons a chance to "pick up the slack".
+
