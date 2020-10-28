@@ -126,7 +126,7 @@ print(model.summary())
 #-------------------------
 
 #EPOCHS = 100
-# you can run it at 100 epochs, but you will see that the val_acc flattens at around 76% after ~20
+# you can run it at 100 epochs, but you will see that the val_acc flattens at around 76% after ~15
 # this is a clear sign of over-fitting
 EPOCHS = 25
 
