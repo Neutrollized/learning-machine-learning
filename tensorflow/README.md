@@ -5,11 +5,12 @@ I also recommend using [`pyenv`](https://realpython.com/intro-to-pyenv/) to setu
 
 ## Dependencies
 - **tensorflow** (it will install other package requirements, including **numpy**)
-- **matplot**
+- **matplotlib**
+- **scikit-learn**
 - [**tensorflow-datasets**](https://blog.tensorflow.org/2019/02/introducing-tensorflow-datasets.html)
 - [**seaborn**](https://seaborn.pydata.org/) (Auto MPG example)
 
-`pip3 install tensorflow matplot tensorflow-datasets seaborn`
+`pip3 install tensorflow matplotlib scikit-learn tensorflow-datasets seaborn`
 
 
 ## 0x - Celcius to Fahrenheit (Regression)
@@ -65,3 +66,8 @@ With each pass through the epoch, the weights and biases in each neuron is adjus
 
 The way dropout solves this is by randomly turning off neurons with each pass and thereby giving the other neurons a chance to "pick up the slack".
 
+
+## 4x - Flower Classification
+[Exercise](https://colab.research.google.com/github/tensorflow/examples/blob/master/courses/udacity_intro_to_tensorflow_for_deep_learning/l05c03_exercise_flowers_with_data_augmentation.ipynb)
+
+[Solution](https://colab.research.google.com/github/tensorflow/examples/blob/master/courses/udacity_intro_to_tensorflow_for_deep_learning/l05c04_exercise_flowers_with_data_augmentation_solution.ipynb)
