@@ -58,6 +58,10 @@ print(file01.iloc[-5:, [6, 7, 8]])
 #----------------------------------------------
 
 print(file01.loc[0, 'College'])
+# better way of doing the same for single columns is
+#print(file01.College.loc[0])
+# or even this, because you're referencing the column by name so using loc is implied
+#print(file01.College[0])
 
 print(file01.loc[:, ['Name', 'Team', 'College']])
 
