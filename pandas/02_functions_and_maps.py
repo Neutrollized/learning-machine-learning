@@ -62,3 +62,31 @@ def remean_salary(row):
 # if you had a function that applied changes to each column
 # then you would have to call axis='index'
 print(data02.apply(remean_salary, axis='columns'))
+
+
+# we're calculating the ratio between 2 columns in all the rows
+def salary_age_ratio(row):
+  SAR = row.Salary / row.Age
+  return SAR
+
+data03 = data02.apply(salary_age_ratio, axis='columns')
+
+# returns the info of the players with the highest and lowest salary-to-age ratios
+# by utilizing the idxmax() and idxmin() methods respectively
+# https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.idxmax.html
+max_sar_index = data03.idxmax()
+print(data02.loc[max_sar_index])
+
+# https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.idxmin.html
+min_sar_index = data03.idxmin()
+print(data02.loc[min_sar_index])
+
+# adding the column to the end
+# https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.assign.html
+data04 = data02.assign(SalaryAgeRatio = data03.values)
+print(data04)
+
+# alternatively, you can add the column using this shorter method instead
+# which adds the values as a new column as the custom map is being applied
+data05 = data02.assign(SalaryAgeRatio=salary_age_ratio)
+print(data05)
