@@ -39,6 +39,17 @@ print(data02.Salary.describe())
 print(data02.Salary.mean())
 print(data02.Salary.value_counts())
 
+# find how many players have 'Jeff' or 'Jordan' in their name
+# and prints the total count (False if they don't; True if they do)
+# note that you need to specify str.contains as it's a strings function
+print(data02.Name.str.contains('Jeff|Jordan').value_counts())
+
+# if you want *only* the True count, then call the sum() function
+print(data02.Name.str.contains('Jeff|Jordan').sum())
+
+# if you want *only* the False, then you'll have to subtract the "sum()" from the total 
+print(len(data02.Name) - data02.Name.str.contains('Jeff|Jordan').sum())
+
 
 #----------------------------
 # maps using map()
