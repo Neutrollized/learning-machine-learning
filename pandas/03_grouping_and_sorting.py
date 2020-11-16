@@ -28,18 +28,6 @@ print(data02.shape)
 print(data02.head())
 
 
-#-----------------------------
-# summary functions examples
-#-----------------------------
-
-print(data02.Team.describe())
-print(data02.Team.unique())
-
-print(data02.Salary.describe())
-print(data02.Salary.mean())
-print(data02.Salary.value_counts())
-
-
 #----------------------------
 # groupwise analysis
 #----------------------------
