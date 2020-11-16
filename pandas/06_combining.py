@@ -7,9 +7,11 @@ import pandas as pd
 # reading & combining the data
 #--------------------------------------
 
-data01 = pd.read_csv("../data/CAvideos.csv")
-data02 = pd.read_csv("../data/GBvideos.csv")
-data03 = pd.read_csv("../data/USvideos.csv")
+# the read_csv() can read from compressed files as well
+# https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.read_csv.html
+data01 = pd.read_csv("../data/CAvideos.csv.zip")
+data02 = pd.read_csv("../data/GBvideos.csv.zip")
+data03 = pd.read_csv("../data/USvideos.csv.zip")
 
 combined_data01 = pd.concat([data01, data02, data03])
 
