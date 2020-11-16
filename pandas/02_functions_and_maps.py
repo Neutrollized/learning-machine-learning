@@ -94,10 +94,10 @@ print(data02.loc[min_sar_index])
 
 # adding the column to the end
 # https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.assign.html
-data04 = data02.assign(SalaryAgeRatio = data03.values)
+data04 = data02.assign(Salary_Age_Ratio = data03.values)
 print(data04)
 
 # alternatively, you can add the column using this shorter method instead
 # which adds the values as a new column as the custom map is being applied
-data05 = data02.assign(SalaryAgeRatio=salary_age_ratio)
+data05 = data02.assign(Salary_Age_Ratio=salary_age_ratio)
 print(data05)
