@@ -23,6 +23,12 @@ print(missing_val_count_by_column)
 # drop rows with missing values
 file01 = file01.dropna(axis=0)
 
+# reset the index from 0 as the index from dropped rows would be removed
+# so you have missing indicies
+# if you don't use 'drop=True', a new column will be added containing the original indices
+# https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.reset_index.html
+file01.reset_index(drop=True, inplace=True)
+
 # shape after dropping rows with missing values
 print(file01.shape)
 

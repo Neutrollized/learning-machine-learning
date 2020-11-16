@@ -22,6 +22,7 @@ print(missing_val_count_by_column)
 
 # drop rows with missing values
 data02 = data01.dropna(axis=0)
+data02.reset_index(drop=True, inplace=True)
 
 # shape after dropping rows with missing values
 print(data02.shape)
