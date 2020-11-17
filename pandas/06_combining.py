@@ -3,9 +3,9 @@
 import pandas as pd
 
 
-#--------------------------------------
-# reading & combining the data
-#--------------------------------------
+#------------------------
+# concat
+#------------------------
 
 # the read_csv() can read from compressed files as well
 # https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.read_csv.html
@@ -25,3 +25,27 @@ print(list(combined_data01.columns))
 missing_val_count_by_column = (combined_data01.isnull().sum())
 print(missing_val_count_by_column)
 
+
+#------------------------
+# join
+# https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.join.html
+#------------------------
+
+left = data01.set_index(['title', 'trending_date'])
+print(left)
+
+right = data02.set_index(['title', 'trending_date'])
+print(right)
+
+# get videos that are trending in the same day in CA and GB
+# you need to provide lsuffix and rsuffix here as both data sets have the same column name
+# and you're doing the join on the index
+lr_joined01 = left.join(right, lsuffix='_CAN', rsuffix='_GB')
+print(lr_joined01)
+
+new_right = data03.set_index(['title', 'trending_date'])
+print(new_right)
+
+# get videos that are trending in the same day in CA and US
+lr_joined02 = left.join(new_right, lsuffix='_CAN', rsuffix='_US')
+print(lr_joined02)
