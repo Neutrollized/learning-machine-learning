@@ -9,8 +9,6 @@ import numpy as np
 #------------------------
 
 df01 = pd.read_csv("../data/netflix_titles.csv.zip")
-
-
 print(list(df01.columns))
 print(df01.shape)
 print(df01)
@@ -40,7 +38,7 @@ df01.fillna({'director':'Unknown',
              'country':'Unknown',
              'date_added':'Unknown',
              'rating':'Unknown'},
-             inplace=True)
+            inplace=True)
 
 df01.reset_index(inplace=True)
 print(df01)
