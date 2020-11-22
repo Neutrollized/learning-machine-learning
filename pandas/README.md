@@ -10,3 +10,12 @@ Now, if you were to do the same using **`loc`**, specifying [0:100] would actual
 
 ## NumPy Random Seed
 [Explained](https://www.sharpsightlabs.com/blog/numpy-random-seed/)
+
+## Scaling vs Normalization
+#### Scaling
+- changing the *range* of your data
+- transforming it so that it fits within a specific range (i.e. 0-100 or 0-1)
+
+#### Normalization
+- changing the *shape* of the distribution of your data
+- change observations so that they can be described as a normal distribution (i.e. bell curve)

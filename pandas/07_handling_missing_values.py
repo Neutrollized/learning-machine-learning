@@ -3,6 +3,9 @@
 import pandas as pd
 import numpy as np
 
+# set seed for reproducibility
+np.random.seed(0)
+
 
 #------------------------
 # netflix data
@@ -15,8 +18,6 @@ print(df01)
 print(df01.head())
 missing_val_count = (df01.isnull().sum())
 print(missing_val_count)
-
-np.random.seed(0)
 
 total_cells = np.product(df01.shape)
 total_missing = missing_val_count.sum()
