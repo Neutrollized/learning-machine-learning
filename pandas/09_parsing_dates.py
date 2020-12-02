@@ -29,11 +29,11 @@ print(landslides['date_parsed'].dtype)
 # plot graph of the landslides by month
 landslides_months = landslides['date_parsed'].dt.month
 landslides_months = landslides_months.dropna()
-sns.distplot(landslides_months, kde=False, bins=12)
+sns.histplot(landslides_months, kde=False, bins=12)
 plt.show()
 
 # plot graph of the landslides by day of month
 landslides_days = landslides['date_parsed'].dt.day
 landslides_days = landslides_days.dropna()
-sns.distplot(landslides_days, kde=False, bins=31)
+sns.histplot(landslides_days, kde=False, bins=31)
 plt.show()
