@@ -51,8 +51,8 @@ print(countries)
 #------------------------------------
 # Fix inconsistencies (function)
 #------------------------------------
+# https://thispointer.com/how-to-get-check-data-types-of-dataframe-columns-in-python-pandas/
 def fix_string_inconsistency(df):
-  #column_dtypes = dict(df.dtypes)
   for i in range(len(df.columns)):
     column = df.columns[i]
     
