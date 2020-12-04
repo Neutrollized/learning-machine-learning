@@ -66,7 +66,7 @@ def replace_matches_in_column(df, column, string_to_match, min_ratio = 47):
 
 
 replace_matches_in_column(df=profs, column='Country', string_to_match="south korea")
-replace_matches_in_column(df=profs, column='Country', string_to_match="usa")
+replace_matches_in_column(df=profs, column='Country', string_to_match="usa", min_ratio=70)
 
 countries = profs['Country'].unique()
 countries.sort()
