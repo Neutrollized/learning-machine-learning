@@ -16,16 +16,20 @@ np.random.seed(0)
 #--------------------------------
 profs = pd.read_csv("../data/pakistan_intellectual_capital.csv")
 
+print(profs.columns)
 print(profs.head())
 print(profs.describe)
+
+
+'''
+#------------------------------------
+# Fix inconsistencies (singles)
+# this block is commented out
+#------------------------------------
 countries = profs['Country'].unique()
 countries.sort()
 print(countries)
 
-
-#---------------------------
-# Fix inconsistencies
-#---------------------------
 # convert to lower case
 profs['Country'] = profs['Country'].str.lower()
 profs['Country'] = profs['Country'].str.strip()
@@ -34,17 +38,38 @@ countries = profs['Country'].unique()
 countries.sort()
 print(countries)
 
-
 # https://chairnerd.seatgeek.com/fuzzywuzzy-fuzzy-string-matching-in-python/
-#sk_matches = fuzzywuzzy.process.extract("south korea", countries, limit=10, scorer=fuzzywuzzy.fuzz.token_sort_ratio)
-#print(sk_matches)
+matches = fuzzywuzzy.process.extract("south korea", countries, limit=10, scorer=fuzzywuzzy.fuzz.token_sort_ratio)
+print(matches)
 
-#usa_matches = fuzzywuzzy.process.extract("usa", countries, limit=10, scorer=fuzzywuzzy.fuzz.token_sort_ratio)
-#print(usa_matches)
+countries = profs['Country'].unique()
+countries.sort()
+print(countries)
+'''
+
+
+#------------------------------------
+# Fix inconsistencies (function)
+#------------------------------------
+def fix_string_inconsistency(df):
+  #column_dtypes = dict(df.dtypes)
+  for i in range(len(df.columns)):
+    column = df.columns[i]
+    
+    if df.dtypes[column] == np.object:
+      df[column] = df[column].str.lower()
+      df[column] = df[column].str.strip()
+
+  # let us know the function's done
+  print("Inconsistencies fixed!")
+
+
+fix_string_inconsistency(profs)
+
 
 # function to replace rows in the provided column of the provided dataframe
 # that match the provided string above the provided ratio with the provided string
-def replace_matches_in_column(df, column, string_to_match, min_ratio = 47):
+def replace_matches_in_column(df, column, string_to_match, min_ratio):
   # get a list of unique strings
   strings = df[column].unique()
     
@@ -65,7 +90,7 @@ def replace_matches_in_column(df, column, string_to_match, min_ratio = 47):
   print("All done!")
 
 
-replace_matches_in_column(df=profs, column='Country', string_to_match="south korea")
+replace_matches_in_column(df=profs, column='Country', string_to_match="south korea", min_ratio=47)
 replace_matches_in_column(df=profs, column='Country', string_to_match="usa", min_ratio=70)
 
 countries = profs['Country'].unique()
