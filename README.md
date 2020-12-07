@@ -25,7 +25,7 @@ If you have any Jupyter notebooks (*.ipynb) files that you want to convert to ot
 - instead of specifying a set of features manually, I'm going have it use all columns with numerical value/data types(**dtypes**)
 
 `04b_melbourne_model.py` improves on this:
-- using an **extension to imutation**, this adds columns to your data to note which rows had missing data to help your model make better predictions as the imputed values aren't actual data and would be above/below what the actual would be
+- using an **extension to imputation**, this adds columns to your data to note which rows had missing data to help your model make better predictions as the imputed values aren't actual data and would be above/below what the actual would be
 
 `05_melbourne_model.py` improves on this:
 - taking the **Date** column value of *M/DD/YYYY* and turn it into 2 columns called **Date_Month** and **Date_Year**
