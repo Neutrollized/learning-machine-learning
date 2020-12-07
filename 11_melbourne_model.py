@@ -72,8 +72,9 @@ my_pipeline = Pipeline(steps=[
   ('model', RandomForestRegressor(n_estimators=100, random_state=0))
 ])
 
-# multiply by -1 since sklearn calculates negative MAE
 # https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.cross_val_score.html
+# multiply by -1 since sklearn calculates negative MAE
+# https://scikit-learn.org/stable/modules/model_evaluation.html
 scores = -1 * cross_val_score(my_pipeline, X, y,
                                cv=5,
                                scoring='neg_mean_absolute_error')
