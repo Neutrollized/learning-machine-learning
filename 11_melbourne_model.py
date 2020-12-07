@@ -80,3 +80,4 @@ scores = -1 * cross_val_score(my_pipeline, X, y,
                                scoring='neg_mean_absolute_error')
 
 print("MAE scores:\n", scores)
+print("Average MAE score (across experiments):", scores.mean())
