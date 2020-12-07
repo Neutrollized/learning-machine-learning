@@ -31,6 +31,12 @@ If you have any Jupyter notebooks (*.ipynb) files that you want to convert to ot
 - taking the **Date** column value of *M/DD/YYYY* and turn it into 2 columns called **Date_Month** and **Date_Year**
 - this will split the categorical **Date** column into 2 numerical columns to be interpretty separately 
 
+`10_melbourne_model.py`:
+- here we take a step back and try to organize the entire process buy building a simple pipeline
+- this reduces errors by simplifying the code
+
+`11_melbourne_model.py` improves on this:
+- by adding [cross-validation](https://towardsdatascience.com/cross-validation-430d9a5fee22) into the mix
 
 ## NOTES
 - any `NaN` in the data from printing the data or via `print(data.head())`, etc. means *Not a Number* (i.e. missing data)
