@@ -29,6 +29,11 @@ for i,c in enumerate(celsius_q):
 layer0 = tf.keras.layers.Dense(units=1, input_shape=[1])
 model = tf.keras.Sequential([layer0])
 
+# list the weights and bias for each input column (weight)
+# here, it's just 1 w and 1 b (always just 1 bias for each dense layer)
+w, b = model.weights
+print("Weights\n{}\nBias\n{}".format(w, b))
+
 # Adam stands for "ADAptive with Momentum"
 model.compile(loss='mean_squared_error',
               optimizer=tf.keras.optimizers.Adam(0.1))
