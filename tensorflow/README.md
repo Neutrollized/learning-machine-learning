@@ -66,6 +66,21 @@ With each pass through the epoch, the weights and biases in each neuron is adjus
 
 The way dropout solves this is by randomly turning off neurons with each pass and thereby giving the other neurons a chance to "pick up the slack".
 
+#### Transfer Learning
+Instead of training your own models with large datasets (especially images), you can use a model that some 3rd party large neural networks have trained and thus transfering what they learned into your own work and improving accuracy.
+
+You will have to change the output layer of the pre-trained model so that it matches the output you need.  You will also make sure that you don't change the pre-trained part of the pre-trained model (called "freezing") or else the features that it learned will change.
+
+[TensorFlow Hub](https://tfhub.dev/) has a lot of pre-trained models that already has the output/classification layer stripped.  Using it is easy.  Here's an example:
+```
+CLASSIFIER_URL = "https://tfhub.dev/google/tf2-preview/mobilenet_v2/feature_vector/2"
+IMAGE_RES = 224
+
+model = tf.keras.Sequential([
+  hub.KerasLayer(CLASSIFIER_URL, input_shape=(IMAGE_RES, IMAGE_RES, 3)),
+  layers.Dense(2, activation='softmax')
+])
+```
 
 ## 4x - Flower Classification
 [Exercise](https://colab.research.google.com/github/tensorflow/examples/blob/master/courses/udacity_intro_to_tensorflow_for_deep_learning/l05c03_exercise_flowers_with_data_augmentation.ipynb)
