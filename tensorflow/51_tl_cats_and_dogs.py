@@ -175,7 +175,7 @@ for n in range(30):
   plt.subplots_adjust(hspace = 0.3)
   plt.imshow(image_batch[n])
   color = "blue" if predicted_ids[n] == label_batch[n] else "red"
-  plt.title(predictred_class_names[n].title(), color=color)
+  plt.title(predicted_class_names[n].title(), color=color)
   plt.axis('off')
 
 _ = plt.suptitle("Model predictions (blue: correct, red: incorrect)")
