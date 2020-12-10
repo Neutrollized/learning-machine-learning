@@ -66,7 +66,14 @@ With each pass through the epoch, the weights and biases in each neuron is adjus
 
 The way dropout solves this is by randomly turning off neurons with each pass and thereby giving the other neurons a chance to "pick up the slack".
 
-#### Transfer Learning
+
+## 4x - Flower Classification
+[Exercise](https://colab.research.google.com/github/tensorflow/examples/blob/master/courses/udacity_intro_to_tensorflow_for_deep_learning/l05c03_exercise_flowers_with_data_augmentation.ipynb)
+
+[Solution](https://colab.research.google.com/github/tensorflow/examples/blob/master/courses/udacity_intro_to_tensorflow_for_deep_learning/l05c04_exercise_flowers_with_data_augmentation_solution.ipynb)
+
+
+## 5x - Transfer Learning
 Instead of training your own models with large datasets (especially images), you can use a model that some 3rd party large neural networks have trained and thus transfering what they learned into your own work and improving accuracy.
 
 You will have to change the output layer of the pre-trained model so that it matches the output you need.  You will also make sure that you don't change the pre-trained part of the pre-trained model (called "freezing") or else the features that it learned will change.
@@ -81,8 +88,4 @@ model = tf.keras.Sequential([
   layers.Dense(2, activation='softmax')
 ])
 ```
-
-## 4x - Flower Classification
-[Exercise](https://colab.research.google.com/github/tensorflow/examples/blob/master/courses/udacity_intro_to_tensorflow_for_deep_learning/l05c03_exercise_flowers_with_data_augmentation.ipynb)
-
-[Solution](https://colab.research.google.com/github/tensorflow/examples/blob/master/courses/udacity_intro_to_tensorflow_for_deep_learning/l05c04_exercise_flowers_with_data_augmentation_solution.ipynb)
+Transfer Learning is a very important/useful concept in ML as it leverages models that were trained on very large neural nets and data sets -- something that would be both costly and time consuming if you were to do it on your own (just imagine trying to aquire a gazillion cat and dog pictures to improve your model's accuracy) 
