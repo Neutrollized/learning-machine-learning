@@ -78,9 +78,9 @@ Instead of training your own models with large datasets (especially images), you
 
 You will have to change the output layer of the pre-trained model so that it matches the output you need.  You will also make sure that you don't change the pre-trained part of the pre-trained model (called "freezing") or else the features that it learned will change.
 
-[TensorFlow Hub](https://tfhub.dev/) has a lot of pre-trained models that already has the output/classification layer stripped.  Using it is easy.  Here's an example:
+[TensorFlow Hub](https://tfhub.dev/) has a lot of pre-trained models that already has the output/classification layer stripped.  Using it is easy; here's an example:
 ```
-CLASSIFIER_URL = "https://tfhub.dev/google/tf2-preview/mobilenet_v2/feature_vector/2"
+CLASSIFIER_URL = "https://tfhub.dev/google/tf2-preview/mobilenet_v2/feature_vector/4"
 IMAGE_RES = 224
 
 model = tf.keras.Sequential([
@@ -88,6 +88,8 @@ model = tf.keras.Sequential([
   layers.Dense(2, activation='softmax')
 ])
 ```
+where the trailing number (`4` in the example), is the version number.
+
 Transfer Learning is a very important/useful concept in ML as it leverages models that were trained on very large neural nets and data sets -- something that would be both costly and time consuming if you were to do it on your own (just imagine trying to aquire a gazillion cat and dog pictures to improve your model's accuracy) 
 
 [Transfer Learning with Flowers Classification - Exercise](https://colab.research.google.com/github/tensorflow/examples/blob/master/courses/udacity_intro_to_tensorflow_for_deep_learning/l06c02_exercise_flowers_with_transfer_learning.ipynb)
