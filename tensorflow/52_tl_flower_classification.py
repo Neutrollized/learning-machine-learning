@@ -14,7 +14,6 @@ from tensorflow.keras import layers
 
 import matplotlib.pyplot as plt
 import numpy as np
-import PIL.Image as Image	# Python Image Library
 
 import logging
 logger = tf.get_logger()
@@ -38,16 +37,13 @@ imagenet_labels = np.array(open(labels_path).read().splitlines())
 
 
 #--------------------------------------
-# import cats & dogs datasets
+# import flowers dataset
 #--------------------------------------
 
-# NOTE: 'train[:80%]' = from start up to 80%
-#       'train[80%:]' = from 80% up to the end (i.e. last 20%)
-# https://www.tensorflow.org/datasets/splits
-(train_examples, validation_examples), info = tfds.load('cats_vs_dogs',
+(train_examples, validation_examples), info = tfds.load('tf_flowers',
                                                         with_info=True,
                                                         as_supervised=True,
-                                                        split=['train[:80%]', 'train[80%:]']
+                                                        split=['train[:70%]', 'train[70%:]']
                                                        )
 
 num_examples = info.splits['train'].num_examples

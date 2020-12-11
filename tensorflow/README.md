@@ -89,3 +89,7 @@ model = tf.keras.Sequential([
 ])
 ```
 Transfer Learning is a very important/useful concept in ML as it leverages models that were trained on very large neural nets and data sets -- something that would be both costly and time consuming if you were to do it on your own (just imagine trying to aquire a gazillion cat and dog pictures to improve your model's accuracy) 
+
+[Transfer Learning with Flowers Classification - Exercise](https://colab.research.google.com/github/tensorflow/examples/blob/master/courses/udacity_intro_to_tensorflow_for_deep_learning/l06c02_exercise_flowers_with_transfer_learning.ipynb)
+
+[Transfer Learning with Flowers Classification - Solution](https://colab.research.google.com/github/tensorflow/examples/blob/master/courses/udacity_intro_to_tensorflow_for_deep_learning/l06c03_exercise_flowers_with_transfer_learning_solution.ipynb)
