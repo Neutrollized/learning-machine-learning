@@ -2,23 +2,35 @@
 
 #######################################################
 #
-# Saving & Loading Models (cats & dogs edition)
+# Loading Saved Models (cats & dogs edition)
 #
 #######################################################
 
 import tensorflow as tf
+from tensorflow import keras
 
 import tensorflow_hub as hub
 import tensorflow_datasets as tfds
 from tensorflow.keras import layers
 
-import time
 import matplotlib.pyplot as plt
 import numpy as np
 
 import logging
 logger = tf.get_logger()
 logger.setLevel(logging.ERROR)
+
+
+#---------------------------
+# load saved model
+#---------------------------
+
+# https://github.com/tensorflow/tensorflow/issues/26835
+sm = keras.models.load_model("./saved_models/cats_and_dogs.h5",
+                             custom_objects={'KerasLayer':hub.KerasLayer}
+                            )
+
+print(sm.summary())
 
 
 #---------------------------------------
@@ -63,74 +75,9 @@ train_batches      = train_examples.shuffle(num_examples//4).map(format_image).b
 validation_batches = validation_examples.map(format_image).batch(BATCH_SIZE).prefetch(1)
 
 
-#----------------------------------------
-# applying transfer learning
-#----------------------------------------
-
-URL = "https://tfhub.dev/google/tf2-preview/mobilenet_v2/feature_vector/4"
-
-feature_extractor = hub.KerasLayer(URL, input_shape=(IMAGE_RES, IMAGE_RES, 3))
-
-# freeze variables in feature extractor layer
-feature_extractor.trainable = False
-
-
-#---------------------------------------------
-# attch our output/classification layer
-#---------------------------------------------
-
-model = tf.keras.Sequential([
-  feature_extractor,
-  layers.Dense(2)
-])
-
-print(model.summary())
-
-
-#------------------------
-# train model
-#------------------------
-
-model.compile(optimizer='adam',
-              loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
-              metrics=['accuracy']
-)
-
-# you can increase the EPOCHS if you wish, but in my runs
-# I noticed that the validation acc didn't improve much after the 3rd EPOCH
-# (was initially run at 6 EPOCHS)
-EPOCHS  = 4
-history = model.fit(train_batches,
-                    epochs=EPOCHS,
-                    validation_data=validation_batches)
-
-# plot accuracy/loss graphs
-acc     = history.history['accuracy']
-val_acc = history.history['val_accuracy']
-
-loss     = history.history['loss']
-val_loss = history.history['val_loss']
-
-epochs_range = range(EPOCHS)
-
-plt.figure(figsize=(8, 8))
-plt.subplot(1, 2, 1)
-plt.plot(epochs_range, acc, label='Training Accuracy')
-plt.plot(epochs_range, val_acc, label='Validation Accuracy')
-plt.legend(loc='lower right')
-plt.title('Training and Validation Accuracy')
-
-plt.subplot(1, 2, 2)
-plt.plot(epochs_range, loss, label='Training Loss')
-plt.plot(epochs_range, val_loss, label='Validation Loss')
-plt.legend(loc='upper right')
-plt.title('Training and Validation Loss')
-plt.show()
-
-
-#--------------------------
-# check model predictions
-#--------------------------
+#-----------------------------------------
+# check loaded model's predictions
+#-----------------------------------------
 
 class_names = np.array(info.features['label'].names)
 print(class_names)
@@ -139,7 +86,7 @@ image_batch, label_batch = next(iter(train_batches.take(1)))
 image_batch = image_batch.numpy()
 label_batch = label_batch.numpy()
 
-predicted_batch       = model.predict(image_batch)
+predicted_batch       = sm.predict(image_batch)
 predicted_batch       = tf.squeeze(predicted_batch).numpy()
 predicted_ids         = np.argmax(predicted_batch, axis=-1)
 predicted_class_names = class_names[predicted_ids]
@@ -159,15 +106,3 @@ for n in range(30):
 
 _ = plt.suptitle("Model predictions (blue: correct, red: incorrect)")
 plt.show()
-
-
-#----------------------------
-# save as keras .h5 file
-#----------------------------
-
-t = time.time()
-
-export_path_keras = "./saved_models/cats_and_dogs_{}.h5".format(int(t))
-print(export_path_keras)
-
-model.save(export_path_keras)

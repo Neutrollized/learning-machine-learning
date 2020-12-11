@@ -3,6 +3,7 @@
 #######################################################
 #
 # Transfer Learning (cats & dogs edition)
+# - also saving model at the end
 #
 #######################################################
 
@@ -161,3 +162,14 @@ for n in range(30):
 
 _ = plt.suptitle("Model predictions (blue: correct, red: incorrect)")
 plt.show()
+
+
+#---------------------------------------------------
+# save as keras .h5 file
+# - the model saved here will be used later...
+#---------------------------------------------------
+
+export_path_keras = "saved_models/cats_and_dogs.h5")
+print(export_path_keras)
+
+model.save(export_path_keras)
