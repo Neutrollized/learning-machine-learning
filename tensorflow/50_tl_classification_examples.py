@@ -78,7 +78,7 @@ plt.show()
                                                        )
 
 num_examples = info.splits['train'].num_examples
-num_classes = info.features['label'].num_classes
+num_classes  = info.features['label'].num_classes
 
 # you can see that the images are not all the same size
 for i, example_image in enumerate(train_examples.take(3)):

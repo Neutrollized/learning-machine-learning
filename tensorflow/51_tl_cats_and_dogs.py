@@ -47,7 +47,7 @@ imagenet_labels = np.array(open(labels_path).read().splitlines())
                                                        )
 
 num_examples = info.splits['train'].num_examples
-num_classes = info.features['label'].num_classes
+num_classes  = info.features['label'].num_classes
 
 for i, example_image in enumerate(train_examples.take(3)):
   print("Image {} shape: {}".format(i+1, example_image[0].shape))
@@ -104,16 +104,16 @@ model.compile(optimizer='adam',
 
 # you can increase the EPOCHS if you wish, but in my runs
 # I noticed that the validation acc didn't improve much after the 3rd EPOCH
-EPOCHS = 4
+EPOCHS  = 4
 history = model.fit(train_batches,
                     epochs=EPOCHS,
                     validation_data=validation_batches)
 
 # plot accuracy/loss graphs
-acc = history.history['accuracy']
+acc     = history.history['accuracy']
 val_acc = history.history['val_accuracy']
 
-loss = history.history['loss']
+loss     = history.history['loss']
 val_loss = history.history['val_loss']
 
 epochs_range = range(EPOCHS)
