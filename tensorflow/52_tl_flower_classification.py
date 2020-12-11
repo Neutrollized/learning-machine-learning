@@ -112,12 +112,13 @@ model.compile(optimizer='adam',
               metrics=['accuracy']
 )
 
-EPOCHS = 5
+# was initially run at 10 EPOCHS (because it was a relatively small image set)
+# and saw that validation accuracy plateaued at ~5th EPOCH so I'm just going to set this to 6
+EPOCHS = 6
 history = model.fit(train_batches,
                     epochs=EPOCHS,
                     validation_data=validation_batches)
 
-'''
 # plot accuracy/loss graphs
 acc = history.history['accuracy']
 val_acc = history.history['val_accuracy']
@@ -173,4 +174,3 @@ for n in range(30):
 
 _ = plt.suptitle("Model predictions (blue: correct, red: incorrect)")
 plt.show()
-'''
