@@ -167,7 +167,7 @@ plt.show()
 
 t = time.time()
 
-export_path_keras = "./{}.h5".format(int(t))
+export_path_keras = "./saved_models/cats_and_dogs_{}.h5".format(int(t))
 print(export_path_keras)
 
 model.save(export_path_keras)
