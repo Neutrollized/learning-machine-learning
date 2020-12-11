@@ -102,7 +102,9 @@ model.compile(optimizer='adam',
               metrics=['accuracy']
 )
 
-EPOCHS = 6
+# you can increase the EPOCHS if you wish, but in my runs
+# I noticed that the validation acc didn't improve much after the 3rd EPOCH
+EPOCHS = 4
 history = model.fit(train_batches,
                     epochs=EPOCHS,
                     validation_data=validation_batches)

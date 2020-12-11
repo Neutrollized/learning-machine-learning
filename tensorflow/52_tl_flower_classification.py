@@ -124,7 +124,7 @@ model.compile(optimizer='adam',
               metrics=['accuracy']
 )
 
-EPOCHS = 6
+EPOCHS = 5
 history = model.fit(train_batches,
                     epochs=EPOCHS,
                     validation_data=validation_batches)
