@@ -3,6 +3,7 @@
 #######################################################
 #
 # Transfer Learning (flower classifiation edition)
+# - using MobileNet
 #
 #######################################################
 
@@ -113,7 +114,8 @@ model.compile(optimizer='adam',
 )
 
 # was initially run at 10 EPOCHS (because it was a relatively small image set)
-# and saw that validation accuracy plateaued at ~5th EPOCH so I'm just going to set this to 6
+# and saw that validation accuracy plateaued after the 4th EPOCH
+# so I'm just going to set this to 6
 EPOCHS = 6
 history = model.fit(train_batches,
                     epochs=EPOCHS,
@@ -147,7 +149,7 @@ plt.show()
 # check model predictions
 #--------------------------
 
-class_names = np.array(info.features['label'].names)
+class_names = np.array(ds_info.features['label'].names)
 print(class_names)
 
 image_batch, label_batch = next(iter(train_batches.take(1)))
@@ -172,5 +174,5 @@ for n in range(30):
   plt.title(predicted_class_names[n].title(), color=color)
   plt.axis('off')
 
-_ = plt.suptitle("Model predictions (blue: correct, red: incorrect)")
+_ = plt.suptitle("Model predictions: Flowers (MobileNet)")
 plt.show()

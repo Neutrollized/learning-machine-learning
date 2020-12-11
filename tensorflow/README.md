@@ -95,3 +95,6 @@ Transfer Learning is a very important/useful concept in ML as it leverages model
 [Transfer Learning with Flowers Classification - Exercise](https://colab.research.google.com/github/tensorflow/examples/blob/master/courses/udacity_intro_to_tensorflow_for_deep_learning/l06c02_exercise_flowers_with_transfer_learning.ipynb)
 
 [Transfer Learning with Flowers Classification - Solution](https://colab.research.google.com/github/tensorflow/examples/blob/master/courses/udacity_intro_to_tensorflow_for_deep_learning/l06c03_exercise_flowers_with_transfer_learning_solution.ipynb)
+
+### MobileNet vs Inception
+We use MobileNet as it is very lightweight/ideal for devices with limited memory & resources (i.e. laptop), but I also have another flower classification example, **52b_tl_flower_classification.py**, that uses Inception instead.  If you compare Inception's classification model, you will see that the size of the model is larger but also the image resolution size is a bit larger...although, this should also give us slightly better accuracy at the cost of speed.  Give them both a try and compare!
