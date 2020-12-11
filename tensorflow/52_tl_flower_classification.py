@@ -2,7 +2,7 @@
 
 #######################################################
 #
-# Transfer Learning (cats & dogs edition)
+# Transfer Learning (flower classifiation edition)
 #
 #######################################################
 
@@ -14,6 +14,7 @@ from tensorflow.keras import layers
 
 import matplotlib.pyplot as plt
 import numpy as np
+import PIL.Image as Image	# Python Image Library
 
 import logging
 logger = tf.get_logger()
@@ -40,6 +41,9 @@ imagenet_labels = np.array(open(labels_path).read().splitlines())
 # import cats & dogs datasets
 #--------------------------------------
 
+# NOTE: 'train[:80%]' = from start up to 80%
+#       'train[80%:]' = from 80% up to the end (i.e. last 20%)
+# https://www.tensorflow.org/datasets/splits
 (train_examples, validation_examples), info = tfds.load('cats_vs_dogs',
                                                         with_info=True,
                                                         as_supervised=True,
@@ -49,6 +53,7 @@ imagenet_labels = np.array(open(labels_path).read().splitlines())
 num_examples = info.splits['train'].num_examples
 num_classes = info.features['label'].num_classes
 
+# you can see that the images are not all the same size
 for i, example_image in enumerate(train_examples.take(3)):
   print("Image {} shape: {}".format(i+1, example_image[0].shape))
 
@@ -64,6 +69,23 @@ validation_batches = validation_examples.map(format_image).batch(BATCH_SIZE).pre
 image_batch, label_batch = next(iter(train_batches.take(1)))
 image_batch = image_batch.numpy()
 label_batch = label_batch.numpy()
+
+result_batch = model.predict(image_batch)
+
+
+predicted_class_names = imagenet_labels[np.argmax(result_batch, axis=-1)]
+print(predicted_class_names)
+
+plt.figure(figsize=(10,9))
+for n in range(30):
+  plt.subplot(6,5,n+1)
+  plt.subplots_adjust(hspace = 0.3)
+  plt.imshow(image_batch[n])
+  plt.title(predicted_class_names[n])
+  plt.axis('off')
+
+_ = plt.suptitle("ImageNet predictions")
+plt.show()
 
 
 #----------------------------------------
