@@ -24,7 +24,7 @@ logger.setLevel(logging.ERROR)
 # download mobilenet classifier
 #---------------------------------------
 
-CLASSIFIER_URL = "https://tfhub.dev/google/tf2-preview/mobilenet_v2/classification/2"
+CLASSIFIER_URL = "https://tfhub.dev/google/tf2-preview/mobilenet_v2/classification/4"
 IMAGE_RES = 224
 
 model = tf.keras.Sequential([
@@ -70,7 +70,7 @@ label_batch = label_batch.numpy()
 # applying transfer learning
 #----------------------------------------
 
-URL = "https://tfhub.dev/google/tf2-preview/mobilenet_v2/feature_vector/2"
+URL = "https://tfhub.dev/google/tf2-preview/mobilenet_v2/feature_vector/4"
 
 feature_extractor = hub.KerasLayer(URL, input_shape=(IMAGE_RES, IMAGE_RES, 3))
 

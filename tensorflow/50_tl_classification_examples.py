@@ -25,7 +25,7 @@ logger.setLevel(logging.ERROR)
 # download mobilenet classifier
 #---------------------------------------
 
-CLASSIFIER_URL = "https://tfhub.dev/google/tf2-preview/mobilenet_v2/classification/2"
+CLASSIFIER_URL = "https://tfhub.dev/google/tf2-preview/mobilenet_v2/classification/4"
 IMAGE_RES = 224
 
 model = tf.keras.Sequential([
@@ -84,6 +84,7 @@ num_classes  = info.features['label'].num_classes
 for i, example_image in enumerate(train_examples.take(3)):
   print("Image {} shape: {}".format(i+1, example_image[0].shape))
 
+# and hence the need to resize them all
 def format_image(image, label):
   image = tf.image.resize(image, (IMAGE_RES, IMAGE_RES))/255.0
   return image, label

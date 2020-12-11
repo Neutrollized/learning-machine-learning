@@ -24,7 +24,7 @@ logger.setLevel(logging.ERROR)
 # download mobilenet classifier
 #---------------------------------------
 
-CLASSIFIER_URL = "https://tfhub.dev/google/tf2-preview/mobilenet_v2/classification/2"
+CLASSIFIER_URL = "https://tfhub.dev/google/tf2-preview/mobilenet_v2/classification/4"
 IMAGE_RES = 224
 
 model = tf.keras.Sequential([
@@ -40,16 +40,32 @@ imagenet_labels = np.array(open(labels_path).read().splitlines())
 # import flowers dataset
 #--------------------------------------
 
-(train_examples, validation_examples), info = tfds.load('tf_flowers',
+(train_examples, validation_examples), ds_info = tfds.load('tf_flowers',
                                                         with_info=True,
                                                         as_supervised=True,
                                                         split=['train[:70%]', 'train[70%:]']
                                                        )
 
-num_examples = info.splits['train'].num_examples
-num_classes = info.features['label'].num_classes
+num_examples = ds_info.splits['train'].num_examples
+num_classes  = ds_info.features['label'].num_classes
 
-# you can see that the images are not all the same size
+num_train_examples      = 0
+num_validation_examples = 0
+
+for example in train_examples:
+  num_train_examples += 1
+
+for example in validation_examples:
+  num_validation_examples += 1
+
+print('Total number of classes: {}'.format(num_classes))
+print('Total number of images: {}'.format(num_examples))
+print('Total number of training images: {}'.format(num_train_examples))
+print('Total number of validation images: {}'.format(num_validation_examples))
+
+
+# once again, you can see that the images are not all the same size
+# and so we'll have to resize them all 
 for i, example_image in enumerate(train_examples.take(3)):
   print("Image {} shape: {}".format(i+1, example_image[0].shape))
 
@@ -59,9 +75,10 @@ def format_image(image, label):
 
 BATCH_SIZE = 32
 
-train_batches      = train_examples.shuffle(num_examples//4).map(format_image).batch(BATCH_SIZE).prefetch(1)
+train_batches      = train_examples.shuffle(num_train_examples//4).map(format_image).batch(BATCH_SIZE).prefetch(1)
 validation_batches = validation_examples.map(format_image).batch(BATCH_SIZE).prefetch(1)
 
+'''
 image_batch, label_batch = next(iter(train_batches.take(1)))
 image_batch = image_batch.numpy()
 label_batch = label_batch.numpy()
@@ -176,3 +193,4 @@ for n in range(30):
 
 _ = plt.suptitle("Model predictions (blue: correct, red: incorrect)")
 plt.show()
+'''
