@@ -61,10 +61,6 @@ BATCH_SIZE = 32
 train_batches      = train_examples.shuffle(num_examples//4).map(format_image).batch(BATCH_SIZE).prefetch(1)
 validation_batches = validation_examples.map(format_image).batch(BATCH_SIZE).prefetch(1)
 
-image_batch, label_batch = next(iter(train_batches.take(1)))
-image_batch = image_batch.numpy()
-label_batch = label_batch.numpy()
-
 
 #----------------------------------------
 # applying transfer learning
@@ -139,6 +135,10 @@ plt.show()
 
 class_names = np.array(info.features['label'].names)
 print(class_names)
+
+image_batch, label_batch = next(iter(train_batches.take(1)))
+image_batch = image_batch.numpy()
+label_batch = label_batch.numpy()
 
 predicted_batch       = model.predict(image_batch)
 predicted_batch       = tf.squeeze(predicted_batch).numpy()
