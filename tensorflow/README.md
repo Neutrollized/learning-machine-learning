@@ -97,4 +97,11 @@ Transfer Learning is a very important/useful concept in ML as it leverages model
 [Transfer Learning with Flowers Classification - Solution](https://colab.research.google.com/github/tensorflow/examples/blob/master/courses/udacity_intro_to_tensorflow_for_deep_learning/l06c03_exercise_flowers_with_transfer_learning_solution.ipynb)
 
 ### MobileNet vs Inception
-We use MobileNet as it is very lightweight/ideal for devices with limited memory & resources (i.e. laptop), but I also have another flower classification example, **52b_tl_flower_classification.py**, that uses Inception instead.  If you compare Inception's classification model, you will see that the size of the model is larger but also the image resolution size is a bit larger...although, this should also give us slightly better accuracy at the cost of speed.  Give them both a try and compare!
+We use MobileNet as it is very lightweight/ideal for devices with limited memory & resources (i.e. laptop), but I also have another flower classification example, **52b_tl_flower_classification.py**, that uses Inception instead.  If you compare Inception's classification model, you will see that the size of the model is larger (i.e. more layers?) but also the image resolution size is a bit larger...although, this should also give us slightly better accuracy at the cost of speed.  
+
+For me, training on my Intel MBPro at 6 EPOCHS (to match what's run on the MobileNet version) took ~5x longer and accuracy was the same.  Even at 10 EPOCHS, the validation accuracy seems to have tapered off at ~90% on this model/dataset, which is what we got from MobileNet.
+
+
+## 6x - Saving & Loading Models
+For small/quick models, you can afford to train anew every time, but for large models that may take days or even weeks to train, it's very impractical to have to do it all from scratch everytime.  By saving a model, it allows you to reuse that training again later on (which is essentially Transfer Learning).  You can also load the model and continue training with additional data.
+

@@ -2,8 +2,7 @@
 
 #######################################################
 #
-# Transfer Learning (flower classifiation edition)
-# - using Inception
+# Saving & Loading Models (cats & dogs edition)
 #
 #######################################################
 
@@ -13,6 +12,7 @@ import tensorflow_hub as hub
 import tensorflow_datasets as tfds
 from tensorflow.keras import layers
 
+import time
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -22,11 +22,11 @@ logger.setLevel(logging.ERROR)
 
 
 #---------------------------------------
-# download inception classifier
+# download mobilenet classifier
 #---------------------------------------
 
-CLASSIFIER_URL = "https://tfhub.dev/google/tf2-preview/inception_v3/classification/4"
-IMAGE_RES = 299
+CLASSIFIER_URL = "https://tfhub.dev/google/tf2-preview/mobilenet_v2/classification/4"
+IMAGE_RES = 224
 
 model = tf.keras.Sequential([
   hub.KerasLayer(CLASSIFIER_URL, input_shape=(IMAGE_RES, IMAGE_RES, 3))
@@ -38,35 +38,18 @@ imagenet_labels = np.array(open(labels_path).read().splitlines())
 
 
 #--------------------------------------
-# import flowers dataset
+# import cats & dogs datasets
 #--------------------------------------
 
-(train_examples, validation_examples), ds_info = tfds.load('tf_flowers',
+(train_examples, validation_examples), info = tfds.load('cats_vs_dogs',
                                                         with_info=True,
                                                         as_supervised=True,
-                                                        split=['train[:70%]', 'train[70%:]']
+                                                        split=['train[:80%]', 'train[80%:]']
                                                        )
 
-num_examples = ds_info.splits['train'].num_examples
-num_classes  = ds_info.features['label'].num_classes
+num_examples = info.splits['train'].num_examples
+num_classes  = info.features['label'].num_classes
 
-num_train_examples      = 0
-num_validation_examples = 0
-
-for example in train_examples:
-  num_train_examples += 1
-
-for example in validation_examples:
-  num_validation_examples += 1
-
-print('Total number of classes: {}'.format(num_classes))
-print('Total number of images: {}'.format(num_examples))
-print('Total number of training images: {}'.format(num_train_examples))
-print('Total number of validation images: {}'.format(num_validation_examples))
-
-
-# once again, you can see that the images are not all the same size
-# and so we'll have to resize them all 
 #for i, example_image in enumerate(train_examples.take(3)):
 #  print("Image {} shape: {}".format(i+1, example_image[0].shape))
 
@@ -76,7 +59,7 @@ def format_image(image, label):
 
 BATCH_SIZE = 32
 
-train_batches      = train_examples.shuffle(num_train_examples//4).map(format_image).batch(BATCH_SIZE).prefetch(1)
+train_batches      = train_examples.shuffle(num_examples//4).map(format_image).batch(BATCH_SIZE).prefetch(1)
 validation_batches = validation_examples.map(format_image).batch(BATCH_SIZE).prefetch(1)
 
 
@@ -84,7 +67,7 @@ validation_batches = validation_examples.map(format_image).batch(BATCH_SIZE).pre
 # applying transfer learning
 #----------------------------------------
 
-URL = "https://tfhub.dev/google/tf2-preview/inception_v3/feature_vector/4"
+URL = "https://tfhub.dev/google/tf2-preview/mobilenet_v2/feature_vector/4"
 
 feature_extractor = hub.KerasLayer(URL, input_shape=(IMAGE_RES, IMAGE_RES, 3))
 
@@ -98,7 +81,7 @@ feature_extractor.trainable = False
 
 model = tf.keras.Sequential([
   feature_extractor,
-  layers.Dense(num_classes)
+  layers.Dense(2)
 ])
 
 print(model.summary())
@@ -113,16 +96,19 @@ model.compile(optimizer='adam',
               metrics=['accuracy']
 )
 
-EPOCHS = 10
+# you can increase the EPOCHS if you wish, but in my runs
+# I noticed that the validation acc didn't improve much after the 3rd EPOCH
+# (was initially run at 6 EPOCHS)
+EPOCHS  = 4
 history = model.fit(train_batches,
                     epochs=EPOCHS,
                     validation_data=validation_batches)
 
 # plot accuracy/loss graphs
-acc = history.history['accuracy']
+acc     = history.history['accuracy']
 val_acc = history.history['val_accuracy']
 
-loss = history.history['loss']
+loss     = history.history['loss']
 val_loss = history.history['val_loss']
 
 epochs_range = range(EPOCHS)
@@ -146,7 +132,7 @@ plt.show()
 # check model predictions
 #--------------------------
 
-class_names = np.array(ds_info.features['label'].names)
+class_names = np.array(info.features['label'].names)
 print(class_names)
 
 image_batch, label_batch = next(iter(train_batches.take(1)))
@@ -171,5 +157,17 @@ for n in range(30):
   plt.title(predicted_class_names[n].title(), color=color)
   plt.axis('off')
 
-_ = plt.suptitle("Model predictions: Flowers (Inception)")
+_ = plt.suptitle("Model predictions (blue: correct, red: incorrect)")
 plt.show()
+
+
+#----------------------------
+# save as keras .h5 file
+#----------------------------
+
+t = time.time()
+
+export_path_keras = "./{}.h5".format(int(t))
+print(export_path_keras)
+
+model.save(export_path_keras)
