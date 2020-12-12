@@ -105,3 +105,6 @@ For me, training on my Intel MBPro at 6 EPOCHS (to match what's run on the Mobil
 ## 6x - Saving & Loading Models
 For small/quick models, you can afford to train anew every time, but for large models that may take days or even weeks to train, it's very impractical to have to do it all from scratch everytime.  By saving a model, it allows you to reuse that training again later on (which is essentially Transfer Learning).  You can also load the model and continue training with additional data.
 
+
+## 7x - Time Series Forecasting
+A major use for ML/deep learning is time series forcasting (stock market, weather, etc.)
