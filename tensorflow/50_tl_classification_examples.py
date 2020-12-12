@@ -110,6 +110,5 @@ for n in range(30):
   plt.imshow(image_batch[n])
   plt.title(predicted_class_names[n])
   plt.axis('off')
-
 _ = plt.suptitle("ImageNet predictions")
 plt.show()
