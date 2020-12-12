@@ -118,7 +118,7 @@ Split model into:
 - training period
 - validation period
 - test period
-For time series with some seasonality, you generally want to ensure that each period contains a whole number of seasons -- what that means is you want 1 year, 2 years, 3 years, etc. and not 1.5 years becuase then some seasons will get a higher representation (i.e. 2 summers, but only 1 winter).  
+For time series with some seasonality, you generally want to ensure that each period contains a whole number of seasons -- what that means is you want 1 year, 2 years, 3 years, etc. and not 1.5 years because then some seasons will get a higher representation (i.e. 2 summers, but only 1 winter).  
 
 As for how the periods are used, you would generally train on the training period and validate with the validation period.  After you've obtained what you believe to be your best model, you would retrain on training + validation and validate with the test period to get an idea of how well your model might perform in production.  Finally, you will want to do one last training on training + validation + test before actually deploying it in prod.
 
