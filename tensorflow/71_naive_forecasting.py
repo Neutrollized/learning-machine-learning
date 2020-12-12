@@ -112,7 +112,10 @@ plot_series(time_valid, x_valid, start=0, end=150, label="Series")
 plot_series(time_valid, naive_forecast, start=1, end=151, label="Forecast")
 plt.show()
 
-errors     = naive_forecast - x_valid
-abs_errors = np.abs(errors)
-mae        = abs_errors.mean()
+errors = naive_forecast - x_valid
+mse    = np.square(errors).mean()	# mean squared error
+mae    = np.abs(errors).mean()		# mean absolute error
+mape   = np.abs(errors/x_valid).mean()	# mean absolute percentage error
+print(mse)
 print(mae)
+print(mape)
