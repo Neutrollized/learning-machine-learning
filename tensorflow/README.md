@@ -108,3 +108,21 @@ For small/quick models, you can afford to train anew every time, but for large m
 
 ## 7x - Time Series Forecasting
 A major use for ML/deep learning is time series forcasting (stock market, weather, etc.)
+
+### Naive Forecasting
+Take the last value and assume the next value will be the same (think of it like a shift to the right on the x-axis).  Useful to measure the performance of naive forecasting for establishing a baseline.
+
+### Measuring Performance
+#### Fixed Partitioning
+Split model into:
+- training period
+- validation period
+- test period
+For time series with some seasonality, you generally want to ensure that each period contains a whole number of seasons -- what that means is you want 1 year, 2 years, 3 years, etc. and not 1.5 years becuase then some seasons will get a higher representation (i.e. 2 summers, but only 1 winter).  
+
+As for how the periods are used, you would generally train on the training period and validate with the validation period.  After you've obtained what you believe to be your best model, you would retrain on training + validation and validate with the test period to get an idea of how well your model might perform in production.  Finally, you will want to do one last training on training + validation + test before actually deploying it in prod.
+
+Why do we train on the test set?  Because it's a time series, having the most recent data is relevant (vs a flower classification model which time is not really a factor).  As such, quite often you'll see models with just a training and validation period since the test period is in the future.
+
+#### Roll-Forward Partitioning
+Start with a short training period and increase it incrementally (+1 day or +1 week at a time).  Drawback is it requires more training time, but the benefit is that it more closely mimics real life as you get (daily) updated data.  IRL, you wouldn't want to create a time series forecasting model that was built on last year's data and still use it 2 years down the road -- you'd want to update your model regularly
