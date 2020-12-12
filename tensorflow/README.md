@@ -126,3 +126,6 @@ Why do we train on the test set?  Because it's a time series, having the most re
 
 #### Roll-Forward Partitioning
 Start with a short training period and increase it incrementally (+1 day or +1 week at a time).  Drawback is it requires more training time, but the benefit is that it more closely mimics real life as you get (daily) updated data.  IRL, you wouldn't want to create a time series forecasting model that was built on last year's data and still use it 2 years down the road -- you'd want to update your model regularly.
+
+### Metrics
+There are many ways you can take metrics, but one 

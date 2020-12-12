@@ -3,10 +3,12 @@
 ##################################################
 #
 # Time Series Forecasting
-# - no tf stuff in this one
 # - just showing some common patterns
+# - metrics options
 #
 ##################################################
+
+from tensorflow import keras
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -112,6 +114,7 @@ plot_series(time_valid, x_valid, start=0, end=150, label="Series")
 plot_series(time_valid, naive_forecast, start=1, end=151, label="Forecast")
 plt.show()
 
+# MAPE represents the size of the errors compared to the values
 errors = naive_forecast - x_valid
 mse    = np.square(errors).mean()	# mean squared error
 mae    = np.abs(errors).mean()		# mean absolute error
@@ -119,3 +122,6 @@ mape   = np.abs(errors/x_valid).mean()	# mean absolute percentage error
 print(mse)
 print(mae)
 print(mape)
+
+# another way of showing MAE using keras
+#print(keras.metrics.mean_absolute_error(x_valid, naive_forecast).numpy())
