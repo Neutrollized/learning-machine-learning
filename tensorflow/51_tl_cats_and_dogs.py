@@ -169,7 +169,7 @@ plt.show()
 # - the model saved here will be used later...
 #---------------------------------------------------
 
-export_path_keras = "saved_models/cats_and_dogs.h5")
+export_path_keras = "./saved_models/cats_and_dogs.h5")
 print(export_path_keras)
 
 model.save(export_path_keras)

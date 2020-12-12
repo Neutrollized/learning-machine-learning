@@ -4,6 +4,7 @@
 #
 # Transfer Learning (flower classifiation edition)
 # - using MobileNet
+# - also saving model at the end
 #
 #######################################################
 
@@ -176,3 +177,10 @@ for n in range(30):
 
 _ = plt.suptitle("Model predictions: Flowers (MobileNet)")
 plt.show()
+
+
+#---------------------------------------------------
+# save as keras .h5 file
+#---------------------------------------------------
+
+model.save("./saved_models/flower_classification.h5")
