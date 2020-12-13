@@ -93,13 +93,14 @@ for x, y in dataset:
 # from_tensor_slices methods creates dataset
 # where each value corresponds to 1 time step from the time series
 # https://www.tensorflow.org/api_docs/python/tf/data/Dataset#from_tensor_slices
-def window_dataset(series, window_size, batch_size=32):
-  ds = tf.data.Dataset.from_tensor_slices(series)
-  ds = ds.window(window_size + 1,
-                 shift=1,
-                 drop_remainder=True
-                )
-  ds = ds.flat_map(lambda w: w.batch(window_size + 1))
-  ds = ds.map(lamba w: (w[:-1], w[-1]))
-  ds = ds.shuffle(len(series))
-  return ds.batch(batch_size).prefetch(1)
+def window_dataset(series, window_size, batch_size=32, shuffle_buffer=1000):
+  dataset = tf.data.Dataset.from_tensor_slices(series)
+  dataset = dataset.window(window_size + 1,
+                           shift=1,
+                           drop_remainder=True
+                          )
+  dataset = dataset.flat_map(lambda window: window.batch(window_size + 1))
+  dataset = dataset.map(lambda window: (window[:-1], window[-1]))
+  dataset = dataset.shuffle(shuffle_buffer)
+  dataset = dataset.batch(batch_size).prefetch(1)
+  return dataset
