@@ -3,7 +3,7 @@
 ##################################################
 #
 # Time Series Forecasting
-# - no tf stuff in this one
+# - no actual tf stuff yet
 # - just showing some common patterns
 #
 ##################################################

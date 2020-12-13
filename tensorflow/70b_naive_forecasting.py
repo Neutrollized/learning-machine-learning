@@ -3,8 +3,8 @@
 ##################################################
 #
 # Time Series Forecasting
+# - no actual tf stuff yet
 # - just showing some common patterns
-# - metrics options
 #
 ##################################################
 

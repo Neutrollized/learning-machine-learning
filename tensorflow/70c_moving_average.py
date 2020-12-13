@@ -3,11 +3,8 @@
 ##################################################
 #
 # Time Series Forecasting
+# - no actual tf stuff yet
 # - just showing some common patterns
-# - metrics options
-#
-# TODO: need to add comments and references 
-#       for better understanding
 #
 ##################################################
 
