@@ -96,8 +96,8 @@ tf.random.set_seed(42)
 np.random.seed(42)
 
 window_size = 30
-train_set = window_dataset(x_train, window_size)
-valid_set = window_dataset(x_valid, window_size)
+train_set   = window_dataset(x_train, window_size)
+valid_set   = window_dataset(x_valid, window_size)
 
 # we're forecasting a single value, we just need a single unit
 model = keras.models.Sequential([
@@ -113,6 +113,7 @@ optimizer = keras.optimizers.SGD(lr=1e-5, momentum=0.9)
 model.compile(loss=keras.losses.Huber(),
               optimizer=optimizer,
               metrics=["mae"])
+
 early_stopping = keras.callbacks.EarlyStopping(patience=10)
 
 # we can set the epochs to be high as early stopping callback will likely
@@ -124,4 +125,78 @@ model.fit(train_set,
           callbacks=[early_stopping]
          )
 
+def model_forecast(model, series, window_size):
+  ds = tf.data.Dataset.from_tensor_slices(series)
+  ds = ds.window(window_size, shift=1, drop_remainder=True)
+  ds = ds.flat_map(lambda w: w.batch(window_size))
+  ds = ds.batch(32).prefetch(1)
+  forecast = model.predict(ds)
+  return forecast
 
+linear_forecast = model_forecast(model, series[split_time - window_size:-1], window_size)[:, 0]
+print(linear_forecast.shape)
+
+plt.figure(figsize=(10, 6))
+plot_series(time_valid, x_valid)
+plot_series(time_valid, linear_forecast)
+plt.show()
+
+print(keras.metrics.mean_absolute_error(x_valid, linear_forecast).numpy())
+
+
+#--------------------
+# dense model 
+#--------------------
+
+keras.backend.clear_session()
+tf.random.set_seed(42)
+np.random.seed(42)
+
+window_size = 30
+train_set   = window_dataset(x_train, window_size)
+valid_set   = window_dataset(x_valid, window_size)
+
+model = keras.models.Sequential([
+  keras.layers.Dense(10, activation="relu", input_shape=[window_size]),
+  keras.layers.Dense(10, activation="relu"),
+  keras.layers.Dense(1)
+])
+
+optimizer = keras.optimizers.SGD(lr=1e-5, momentum=0.9)
+
+model.compile(loss=keras.losses.Huber(),
+              optimizer=optimizer,
+              metrics=["mae"])
+
+early_stopping = keras.callbacks.EarlyStopping(patience=10)
+
+EPOCHS = 500
+model.fit(train_set,
+          epochs=EPOCHS,
+          validation_data=valid_set,
+          callbacks=[early_stopping]
+         )
+
+dense_forecast = model_forecast(model, series[split_time - window_size:-1], window_size)[:, 0]
+print(dense_forecast.shape)
+
+plt.figure(figsize=(10, 6))
+plot_series(time_valid, x_valid)
+plot_series(time_valid, dense_forecast)
+plt.show()
+
+print(keras.metrics.mean_absolute_error(x_valid, dense_forecast).numpy())
+
+
+'''
+lr_schedule = keras.callbacks.LearningRateScheduler(
+  lambda epoch: 1e-7 * 10**)epoch / 20))
+
+optimizer = keras.optimizers.SGD(lr=1e-7, momentum=0.9)
+
+model.compile(loss=keras.losses.Huber(),
+              optimizer=optimizer,
+              metrics=["mae"])
+
+history = model.fit(train_set, epochs=100, callbacks=[lr_schedule])
+'''
