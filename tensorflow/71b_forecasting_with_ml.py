@@ -189,6 +189,7 @@ model.fit(train_set,
           callbacks=[early_stopping]
          )
 
+#
 def model_forecast(model, series, window_size):
   ds = tf.data.Dataset.from_tensor_slices(series)
   ds = ds.window(window_size, shift=1, drop_remainder=True)
@@ -197,7 +198,10 @@ def model_forecast(model, series, window_size):
   forecast = model.predict(ds)
   return forecast
 
-linear_forecast = model_forecast(model, series[split_time - window_size:-1], window_size)[:, 0]
+# split_time is where the validate set starts
+# starting from the end minus the window size up until the end (except for the very last time step)
+# you get a forecast over the entire validation period
+linear_forecast = model_forecast(model, series[split_time - window_size:-1], window_size)
 print(linear_forecast.shape)
 
 plt.figure(figsize=(10, 6))
@@ -236,7 +240,7 @@ model.compile(loss=keras.losses.Huber(),
               optimizer=optimizer,
               metrics=["mae"])
 
-history = model.fit(train_set, epochs=100, callbacks=[lr_schedule])
+history = model.fit(train_set, epochs=200, callbacks=[lr_schedule])
 
 plt.semilogx(history.history["lr"], history.history["loss"])
 plt.axis([1e-7, 5e-3, 0, 30])
@@ -276,7 +280,7 @@ model.fit(train_set,
           callbacks=[early_stopping]
          )
 
-dense_forecast = model_forecast(model, series[split_time - window_size:-1], window_size)[:, 0]
+dense_forecast = model_forecast(model, series[split_time - window_size:-1], window_size)
 print(dense_forecast.shape)
 
 plt.figure(figsize=(10, 6))
