@@ -13,6 +13,14 @@ I also recommend using [`pyenv`](https://realpython.com/intro-to-pyenv/) to setu
 
 `pip3 install tensorflow matplotlib scikit-learn tensorflow-datasets seaborn`
 
+## NOTES
+In some of the examples, you might see the following:
+```
+keras.backend.clear_session()
+tf.random.set_seed(42)
+np.random.seed(42)
+```
+which is more for Jupyter notebooks as chances are you'll be running the cells multiple times.  I don't use notebooks right now as I prefer `vim` and terminal.
 
 ## 0x - Celcius to Fahrenheit (Regression)
 - output: Number
