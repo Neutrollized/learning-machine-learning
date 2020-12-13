@@ -115,8 +115,10 @@ def moving_average_forecast(series, window_size):
   """
   Forecasts the mean of the last few values.
   If window_size=1, then this is equivalent to naive forecast.
-  This implementation is much faster than the previous one.
+  This implementation is muich, much faster than the previous one,
+  but not as straigh-forward to understand how it works.
   """
+  # https://numpy.org/doc/stable/reference/generated/numpy.cumsum.html
   mov = np.cumsum(series)
   mov[window_size:] = mov[window_size:] - mov[:-window_size]
   return mov[window_size - 1:-1] / window_size
@@ -128,6 +130,10 @@ plot_series(time_valid, x_valid, label="Series")
 plot_series(time_valid, moving_avg, label="Moving Average (30 days)")
 plt.show()
 
+# the MAE here is higher compared to Naive Forecasting
+# when the changes are small, the Moving Average is pretty good,
+# but it's spikes/large changes (i.e. due to seasonality) that the 
+# Moving Average needs a bit more time to pick up on
 print(keras.metrics.mean_absolute_error(x_valid, moving_avg).numpy())
 
 
@@ -149,6 +155,7 @@ plt.show()
 
 
 # moving avearge of differenced series
+# the window used here is 50, but that's a param that can be tuned
 diff_moving_avg = moving_average_forecast(diff_series, 50)[split_time - 365 - 50:]
 
 plt.figure(figsize=(10, 6))
@@ -158,7 +165,7 @@ plt.show()
 
 
 # moving average of differenced series + past values
-diff_moving_avg_plus_past = series[split_time - 365:-365] + diff_moving_avg
+diff_moving_avg_plus_past = diff_moving_avg + series[split_time - 365:-365]
 
 plt.figure(figsize=(10, 6))
 plot_series(time_valid, x_valid, label="Series")
@@ -169,7 +176,7 @@ print(keras.metrics.mean_absolute_error(x_valid, diff_moving_avg_plus_past).nump
 
 
 # moving average on past values
-diff_moving_avg_plus_smooth_past = moving_average_forecast(series[split_time - 370:-359], 11) + diff_moving_avg
+diff_moving_avg_plus_smooth_past = diff_moving_avg + moving_average_forecast(series[split_time - 370:-359], 11)
 
 plt.figure(figsize=(10, 6))
 plot_series(time_valid, x_valid, label="Series")

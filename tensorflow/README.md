@@ -127,8 +127,12 @@ Start with a short training period and increase it incrementally (+1 day or +1 w
 ### Naive Forecasting
 Take the last value and assume the next value will be the same (think of it like a shift to the right on the x-axis).  Useful to measure the performance of naive forecasting for establishing a baseline.
 
+*"Tomorrow is going to be the same as today"*
+
 ### Moving Average
 Taking the mean value of over a shorter period of time (i.e. last 30 days).  The pro here is that it's removes a lot of the noise as it focuses on a smaller window and you get a smoother forecast...which leads to the con of it not being able to anticipate trend or seasonality and so it quite often performs a little worse than Naive Forecasting.
+
+*"Tomorrow is going to be closer to the average of the last 30 days"*
 
 #### Differencing
 One way to overcome the weakness of the Moving Average is by removing the trend and seaonality from the time series altogether by using [Differencing](https://towardsdatascience.com/an-intuitive-guide-to-differencing-time-series-in-python-1d6c7a2c067a) whereby instead of analyzing the time series itself, you analyze the difference between the time series (t) with itself a year (i.e. t-365) which will preduce a time series without the trend and seasonality.  This, of course only gets a forecast of the differenced series and not the original series, so you restore back the series from a year ago that you subtracted (and thus restoring the trend and seasonality as well).
