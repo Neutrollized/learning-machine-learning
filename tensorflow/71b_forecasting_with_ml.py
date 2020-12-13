@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
 
-##################################################
+###################################################################
 #
 # Time Series Forecasting (time windows)
+# - help finding a good Learning Rate to set your model to
 #
-##################################################
+###################################################################
 
 import tensorflow as tf
 from tensorflow import keras
@@ -87,9 +88,9 @@ time_valid = time[split_time:]
 x_valid    = series[split_time:]
 
 
-#-----------------------
-# linear model
-#-----------------------
+#-------------------------
+# linear model - basic
+#-------------------------
 
 keras.backend.clear_session()
 tf.random.set_seed(42)
@@ -106,10 +107,73 @@ model = keras.models.Sequential([
 
 # SGD = stochastic gradient descent
 # https://keras.io/api/optimizers/sgd/
+# how did we arrive at lr=1e-5?  see section below...
 optimizer = keras.optimizers.SGD(lr=1e-5, momentum=0.9)
 
 # Huber is quadratic for small errors (i.e. MSE), linear for large ones (i.e. MAE)
 # it's a good function to use when you want to optimize MAE
+model.compile(loss=keras.losses.Huber(),
+              optimizer=optimizer,
+              metrics=["mae"])
+
+model.fit(train_set, epochs=100, validation_data=valid_set)
+
+
+#-------------------------------------------------
+# linear model - finding a good learning rate
+#-------------------------------------------------
+
+keras.backend.clear_session()
+tf.random.set_seed(42)
+np.random.seed(42)
+
+window_size = 30
+train_set   = window_dataset(x_train, window_size)
+valid_set   = window_dataset(x_valid, window_size)
+
+model = keras.models.Sequential([
+  keras.layers.Dense(1, input_shape=[window_size])
+])
+
+# starts at a lr of 1e-6 and gradually increase it
+# https://keras.io/api/callbacks/learning_rate_scheduler/
+lr_schedule = keras.callbacks.LearningRateScheduler(
+  lambda epoch: 1e-6 * 10**(epoch / 30)
+)
+
+optimizer = keras.optimizers.SGD(lr=1e-5, momentum=0.9)
+
+model.compile(loss=keras.losses.Huber(),
+              optimizer=optimizer,
+              metrics=["mae"])
+
+history = model.fit(train_set, epochs=100, callbacks=[lr_schedule])
+
+# see you can from the graph (and training output numbers) that loss increased when the lr became too high
+# so you want to be left of the point where you see jitter in the line, which, in our case is ~1e-5
+plt.semilogx(history.history["lr"], history.history["loss"])
+plt.axis([1e-6, 1e-3, 0, 20])
+plt.show()
+
+
+#-------------------------------
+# linear model - final 
+#-------------------------------
+
+keras.backend.clear_session()
+tf.random.set_seed(42)
+np.random.seed(42)
+
+window_size = 30
+train_set   = window_dataset(x_train, window_size)
+valid_set   = window_dataset(x_valid, window_size)
+
+model = keras.models.Sequential([
+  keras.layers.Dense(1, input_shape=[window_size])
+])
+
+optimizer = keras.optimizers.SGD(lr=1e-5, momentum=0.9)
+
 model.compile(loss=keras.losses.Huber(),
               optimizer=optimizer,
               metrics=["mae"])
@@ -144,9 +208,44 @@ plt.show()
 print(keras.metrics.mean_absolute_error(x_valid, linear_forecast).numpy())
 
 
-#--------------------
-# dense model 
-#--------------------
+#-------------------------------------------------
+# dense model - finding a good learning rate
+#-------------------------------------------------
+
+keras.backend.clear_session()
+tf.random.set_seed(42)
+np.random.seed(42)
+
+window_size = 30
+train_set   = window_dataset(x_train, window_size)
+valid_set   = window_dataset(x_valid, window_size)
+
+model = keras.models.Sequential([
+  keras.layers.Dense(10, activation="relu", input_shape=[window_size]),
+  keras.layers.Dense(10, activation="relu"),
+  keras.layers.Dense(1)
+])
+
+lr_schedule = keras.callbacks.LearningRateScheduler(
+  lambda epoch: 1e-7 * 10**(epoch / 30)
+)
+
+optimizer = keras.optimizers.SGD(lr=1e-7, momentum=0.9)
+
+model.compile(loss=keras.losses.Huber(),
+              optimizer=optimizer,
+              metrics=["mae"])
+
+history = model.fit(train_set, epochs=100, callbacks=[lr_schedule])
+
+plt.semilogx(history.history["lr"], history.history["loss"])
+plt.axis([1e-7, 5e-3, 0, 30])
+plt.show()
+
+
+#---------------------------
+# dense model - final
+#---------------------------
 
 keras.backend.clear_session()
 tf.random.set_seed(42)
@@ -186,17 +285,3 @@ plot_series(time_valid, dense_forecast)
 plt.show()
 
 print(keras.metrics.mean_absolute_error(x_valid, dense_forecast).numpy())
-
-
-'''
-lr_schedule = keras.callbacks.LearningRateScheduler(
-  lambda epoch: 1e-7 * 10**)epoch / 20))
-
-optimizer = keras.optimizers.SGD(lr=1e-7, momentum=0.9)
-
-model.compile(loss=keras.losses.Huber(),
-              optimizer=optimizer,
-              metrics=["mae"])
-
-history = model.fit(train_set, epochs=100, callbacks=[lr_schedule])
-'''
