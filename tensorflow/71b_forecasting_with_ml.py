@@ -189,21 +189,24 @@ model.fit(train_set,
           callbacks=[early_stopping]
          )
 
-#
 def model_forecast(model, series, window_size):
+  """
+  Returns a 2d tensor, but becuase it's a time series this returns 1 prediction per time step
+  so you will have a lot of rows of a single column (your prediction).
+  At the end we do a [:, 0] to slice it on the first column creating a 1d tensor of all the prediction values
+  # https://stackoverflow.com/questions/33491703/meaning-of-x-x-1-in-python/33491724
+  """
   ds = tf.data.Dataset.from_tensor_slices(series)
   ds = ds.window(window_size, shift=1, drop_remainder=True)
   ds = ds.flat_map(lambda w: w.batch(window_size))
   ds = ds.batch(32).prefetch(1)
-  forecast = model.predict(ds)
+  forecast = model.predict(ds)[:, 0]
   return forecast
 
 # split_time is where the validate set starts
 # starting from the end minus the window size up until the end (except for the very last time step)
 # you get a forecast over the entire validation period
-# [:, 0] slices array, taking only the first column
-# https://stackoverflow.com/questions/33491703/meaning-of-x-x-1-in-python/33491724
-linear_forecast = model_forecast(model, series[split_time - window_size:-1], window_size)[:, 0]
+linear_forecast = model_forecast(model, series[split_time - window_size:-1], window_size)
 print(linear_forecast.shape)
 
 plt.figure(figsize=(10, 6))
@@ -282,7 +285,7 @@ model.fit(train_set,
           callbacks=[early_stopping]
          )
 
-dense_forecast = model_forecast(model, series[split_time - window_size:-1], window_size)[:, 0]
+dense_forecast = model_forecast(model, series[split_time - window_size:-1], window_size)
 print(dense_forecast.shape)
 
 plt.figure(figsize=(10, 6))
