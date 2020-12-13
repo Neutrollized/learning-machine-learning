@@ -109,9 +109,6 @@ For small/quick models, you can afford to train anew every time, but for large m
 ## 7x - Time Series Forecasting
 A major use for ML/deep learning is time series forcasting (stock market, weather, etc.)
 
-### Naive Forecasting
-Take the last value and assume the next value will be the same (think of it like a shift to the right on the x-axis).  Useful to measure the performance of naive forecasting for establishing a baseline.
-
 ### Measuring Performance
 #### Fixed Partitioning
 Split model into:
@@ -127,5 +124,20 @@ Why do we train on the test set?  Because it's a time series, having the most re
 #### Roll-Forward Partitioning
 Start with a short training period and increase it incrementally (+1 day or +1 week at a time).  Drawback is it requires more training time, but the benefit is that it more closely mimics real life as you get (daily) updated data.  IRL, you wouldn't want to create a time series forecasting model that was built on last year's data and still use it 2 years down the road -- you'd want to update your model regularly.
 
-### Metrics
-There are many ways you can take metrics, but one 
+### Naive Forecasting
+Take the last value and assume the next value will be the same (think of it like a shift to the right on the x-axis).  Useful to measure the performance of naive forecasting for establishing a baseline.
+
+### Moving Average
+Taking the mean value of over a shorter period of time (i.e. last 30 days).  The pro here is that it's removes a lot of the noise as it focuses on a smaller window and you get a smoother forecast...which leads to the con of it not being able to anticipate trend or seasonality and so it quite often performs a little worse than Naive Forecasting.
+
+#### Differencing
+One way to overcome the weakness of the Moving Average is by removing the trend and seaonality from the time series altogether by using [Differencing](https://towardsdatascience.com/an-intuitive-guide-to-differencing-time-series-in-python-1d6c7a2c067a) whereby instead of analyzing the time series itself, you analyze the difference between the time series (t) with itself a year (i.e. t-365) which will preduce a time series without the trend and seasonality.  This, of course only gets a forecast of the differenced series and not the original series, so you restore back the series from a year ago that you subtracted (and thus restoring the trend and seasonality as well).
+
+i.e. **Forecasts = Moving Average of Differenced series + series(t-365)**
+
+However, this forecast still has a lot of noise, which you can remove by applying the Moving Average on the past series as well.
+
+i.e. **Forecasts = trailing Moving Average of Differenced series + centered Moving Average of past series(t-365)**
+
+#### Trailing vs Centered Windows
+Let's say we're gonna use a a 30 day window as an example.  A trailing is as you would expect -- the last 30 days.  A centered window will take into account the few days prior and after the window.  A centered window is more accurate than a trailing window, which is why we use it when calculating the Moving Average in the past series.  However, when calculating the the Moving Average of the present, we can only use a trailing window because we're not able to predict the future. 
