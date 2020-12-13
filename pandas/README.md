@@ -1,6 +1,14 @@
 # README
 This directory contains some basics of [pandas](https://pandas.pydata.org/) for data manipulation/cleaning.
 
+## Dependencies
+- **matplotlib**
+- **scikit-learn**
+- [**tensorflow-datasets**](https://blog.tensorflow.org/2019/02/introducing-tensorflow-datasets.html)
+- [**seaborn**](https://seaborn.pydata.org/)
+- **mlxtend**
+- **fuzzywuzzy** and **python-Levenshtein**
+
 ## Gotchas!
 There's a weird gotcha with `iloc` and `loc` in pandas...
 
