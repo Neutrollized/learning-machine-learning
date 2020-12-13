@@ -116,7 +116,7 @@ For small/quick models, you can afford to train anew every time, but for large m
 
 
 ## 7x - Time Series Forecasting
-A major use for ML/deep learning is time series forcasting (stock market, weather, etc.)
+A major use for ML/deep learning is time series forcasting (stock market, weather, etc.).  Honestly, Time Series Forecasting is a whole course on its own, because while it uses a lot of the ML modeling concepts previously discussed, it has its own unique challenges and things to consider as it deals with time which is constantly change (as opposed to training on a tonne of images of dogs and dog breeds).
 
 ### Measuring Performance
 #### Fixed Partitioning
@@ -154,3 +154,6 @@ i.e. **Forecasts = trailing Moving Average of Differenced series + centered Movi
 
 #### Trailing vs Centered Windows
 Let's say we're gonna use a a 30 day window as an example.  A trailing is as you would expect -- the last 30 days.  A centered window will take into account the few days prior and after the window.  A centered window is more accurate than a trailing window, which is why we use it when calculating the Moving Average in the past series.  However, when calculating the the Moving Average of the present, we can only use a trailing window because we're not able to predict the future. 
+
+### Recurrent Neural Networks (RNN)
+- TODO
