@@ -201,7 +201,9 @@ def model_forecast(model, series, window_size):
 # split_time is where the validate set starts
 # starting from the end minus the window size up until the end (except for the very last time step)
 # you get a forecast over the entire validation period
-linear_forecast = model_forecast(model, series[split_time - window_size:-1], window_size)
+# [:, 0] slices array, taking only the first column
+# https://stackoverflow.com/questions/33491703/meaning-of-x-x-1-in-python/33491724
+linear_forecast = model_forecast(model, series[split_time - window_size:-1], window_size)[:, 0]
 print(linear_forecast.shape)
 
 plt.figure(figsize=(10, 6))
@@ -280,7 +282,7 @@ model.fit(train_set,
           callbacks=[early_stopping]
          )
 
-dense_forecast = model_forecast(model, series[split_time - window_size:-1], window_size)
+dense_forecast = model_forecast(model, series[split_time - window_size:-1], window_size)[:, 0]
 print(dense_forecast.shape)
 
 plt.figure(figsize=(10, 6))
