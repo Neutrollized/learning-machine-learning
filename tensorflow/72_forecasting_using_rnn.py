@@ -97,6 +97,45 @@ class ResetStatesCallback(keras.callbacks.Callback):
 
 
 #-------------------------------------------------
+# statefun RNN (sequence-to-vector example)
+#-------------------------------------------------
+
+keras.backend.clear_session()
+tf.random.set_seed(42)
+np.random.seed(42)
+
+window_size = 30
+train_set   = sequential_window_dataset(x_train, window_size)
+
+# https://www.tensorflow.org/api_docs/python/tf/keras/layers/SimpleRNN
+# return_sequences defaults to False and will return only the final output vector (sequence-to-vector)
+# but what we want is for the first RNN layer to feed into the second so it's not just the final output
+#
+# the lambda at the end scales up the output by a factor of 200 to help training
+# because the default activation function is "hypberbolic tangent (tanh)", the return value is between -1 and 1
+model = keras.models.Sequential([
+  keras.layers.Lambda(lambda x: tf.expand_dims(x, axis=-1), input_shape=[None]),
+  keras.layers.SimpleRNN(100, return_sequences=True),
+  keras.layers.SimpleRNN(100),
+  keras.layers.Dense(1),
+  keras.layers.Lambda(lambda x: x * 200.0)
+])
+
+reset_states = ResetStatesCallback()
+
+optimizer = keras.optimizers.SGD(lr=1e-8, momentum=0.9)
+
+model.compile(loss=keras.losses.Huber(),
+              optimizer=optimizer,
+              metrics=["mae"])
+
+model.fit(train_set, epochs=150, callbacks=[reset_states])
+
+s2v_forecast = model.predict(series[np.newaxis, :, np.newaxis])
+print(s2v_forecast)
+
+
+#-------------------------------------------------
 # stateful RNN - finding a good learning rate
 #-------------------------------------------------
 
@@ -107,6 +146,15 @@ np.random.seed(42)
 window_size = 30
 train_set   = sequential_window_dataset(x_train, window_size)
 
+# https://www.tensorflow.org/api_docs/python/tf/keras/layers/SimpleRNN
+# input shape is 3d: batch size, time step, dimensionality of input sequence
+# number of time steps here is defined as 'None', meaning it will handle sequences of any length
+# this is a univariate time series and hance dimensionality of input sequence is '1'
+#
+# return_sequences defaults to False and will return only the final output vector (sequence-to-vector)
+# but what we want is for the first RNN layer to feed into the second so it's not just the final output
+# we do the same thing for the second RNN layer so that it feeds into the Dense layer
+# and each returns a value, giving us a sequence as output (sequence-to-sequence)
 model = keras.models.Sequential([
   keras.layers.SimpleRNN(100, return_sequences=True, stateful=True,
                          batch_input_shape=[1, None, 1]),
@@ -156,14 +204,21 @@ model = keras.models.Sequential([
 
 reset_states = ResetStatesCallback()
 
+# setting a good learning rate is very important
+# too high and you get instabilities and you don't really learn
+# too low and it takes a really long time to learn
+#
+# loss can also be a bit unpredictable so you don't want early stopping to stop your
+# training too early, and hence we set the patience to be something higher (60)
 optimizer = keras.optimizers.SGD(lr=1e-7, momentum=0.9)
 
 model.compile(loss=keras.losses.Huber(),
               optimizer=optimizer,
               metrics=["mae"])
 
-early_stopping = keras.callbacks.EarlyStopping(patience=50)
+early_stopping = keras.callbacks.EarlyStopping(patience=60)
 
+# save the best model at each EPOCH (if it's the best one)
 model_checkpoint = keras.callbacks.ModelCheckpoint(
   "./saved_models/my_72_checkpoint.h5", save_best_only=True
 )
@@ -175,6 +230,7 @@ model.fit(train_set,
           callbacks=[early_stopping, model_checkpoint, reset_states]
          )
 
+# load the best model that was saved
 model = keras.models.load_model("./saved_models/my_72_checkpoint.h5")
 
 model.reset_states()
