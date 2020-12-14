@@ -2,7 +2,7 @@
 
 ###################################################################
 #
-# Time Series Forecasting using Recurrent Neural Networks (RNN)
+# Time Series Forecasting using Stateful RNNs
 #
 ###################################################################
 
@@ -97,45 +97,6 @@ class ResetStatesCallback(keras.callbacks.Callback):
 
 
 #-------------------------------------------------
-# statefun RNN (sequence-to-vector example)
-#-------------------------------------------------
-
-keras.backend.clear_session()
-tf.random.set_seed(42)
-np.random.seed(42)
-
-window_size = 30
-train_set   = sequential_window_dataset(x_train, window_size)
-
-# https://www.tensorflow.org/api_docs/python/tf/keras/layers/SimpleRNN
-# return_sequences defaults to False and will return only the final output vector (sequence-to-vector)
-# but what we want is for the first RNN layer to feed into the second so it's not just the final output
-#
-# the lambda at the end scales up the output by a factor of 200 to help training
-# because the default activation function is "hypberbolic tangent (tanh)", the return value is between -1 and 1
-model = keras.models.Sequential([
-  keras.layers.Lambda(lambda x: tf.expand_dims(x, axis=-1), input_shape=[None]),
-  keras.layers.SimpleRNN(100, return_sequences=True),
-  keras.layers.SimpleRNN(100),
-  keras.layers.Dense(1),
-  keras.layers.Lambda(lambda x: x * 200.0)
-])
-
-reset_states = ResetStatesCallback()
-
-optimizer = keras.optimizers.SGD(lr=1e-8, momentum=0.9)
-
-model.compile(loss=keras.losses.Huber(),
-              optimizer=optimizer,
-              metrics=["mae"])
-
-model.fit(train_set, epochs=150, callbacks=[reset_states])
-
-s2v_forecast = model.predict(series[np.newaxis, :, np.newaxis])
-print(s2v_forecast)
-
-
-#-------------------------------------------------
 # stateful RNN - finding a good learning rate
 #-------------------------------------------------
 
@@ -209,18 +170,18 @@ reset_states = ResetStatesCallback()
 # too low and it takes a really long time to learn
 #
 # loss can also be a bit unpredictable so you don't want early stopping to stop your
-# training too early, and hence we set the patience to be something higher (60)
+# training too early, and hence we set the patience to be something higher (50)
 optimizer = keras.optimizers.SGD(lr=1e-7, momentum=0.9)
 
 model.compile(loss=keras.losses.Huber(),
               optimizer=optimizer,
               metrics=["mae"])
 
-early_stopping = keras.callbacks.EarlyStopping(patience=60)
+early_stopping = keras.callbacks.EarlyStopping(patience=50)
 
 # save the best model at each EPOCH (if it's the best one)
 model_checkpoint = keras.callbacks.ModelCheckpoint(
-  "./saved_models/my_72_checkpoint.h5", save_best_only=True
+  "./saved_models/my_73_checkpoint.h5", save_best_only=True
 )
 
 EPOCHS = 500
@@ -231,7 +192,7 @@ model.fit(train_set,
          )
 
 # load the best model that was saved
-model = keras.models.load_model("./saved_models/my_72_checkpoint.h5")
+model = keras.models.load_model("./saved_models/my_73_checkpoint.h5")
 
 model.reset_states()
 rnn_forecast = model.predict(series[np.newaxis, :, np.newaxis])
