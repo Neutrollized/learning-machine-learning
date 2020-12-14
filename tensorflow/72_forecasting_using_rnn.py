@@ -186,5 +186,6 @@ print(rnn_forecast.shape)
 plt.figure(figsize=(10, 6))
 plot_series(time_valid, x_valid)
 plot_series(time_valid, rnn_forecast)
+plt.show()
 
 print(keras.metrics.mean_absolute_error(x_valid, rnn_forecast).numpy())
