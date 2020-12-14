@@ -160,7 +160,7 @@ An RNN is a neural network that contains a recurrent layer.  A recurrent layer i
 
 Consider the following sentences:
 
-**"Queen B is my favoring singer."**
+**"Queen B is my favorite singer."**
 
 **"The bees died to protect their queen."**
 
