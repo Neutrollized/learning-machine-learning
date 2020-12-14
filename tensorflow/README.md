@@ -156,4 +156,26 @@ i.e. **Forecasts = trailing Moving Average of Differenced series + centered Movi
 Let's say we're gonna use a a 30 day window as an example.  A trailing is as you would expect -- the last 30 days.  A centered window will take into account the few days prior and after the window.  A centered window is more accurate than a trailing window, which is why we use it when calculating the Moving Average in the past series.  However, when calculating the the Moving Average of the present, we can only use a trailing window because we're not able to predict the future. 
 
 ### Recurrent Neural Networks (RNN)
-- TODO
+An RNN is a neural network that contains a recurrent layer.  A recurrent layer is one that sequentially process a sequence of inputs.  Here's an example of what that means...
+
+Consider the following sentences:
+
+**"Queen B is my favoring singer."**
+
+**"The bees died to protect their queen."**
+
+**"Queen takes pawn."**
+
+**"I got knighted by the queen."**
+
+As you read word by word in the sentences, you're updating the what "queen" refers to based on the context of the sentence.  Your brain is an RNN in this case sequentially processing each input (word).  That's how you know they're all referring to different queens (Beyonce, bees, chess, monarchy).  As you can probobly guess by now that RNNs are used most often in natural language processing (NLP), but you can also use it in time series forecasting, which will be the case here.
+
+#### How it works
+So normally, you take an input time step (x0), and produce and output value for that time step (y0).  In addition to that, it also produces a state/context vector (h0), which gets fed as an additonal input for the next time step (x1).
+
+i.e.
+- x0 --> y0 + h0
+- h0 + x1 --> y1 + h1
+- h1 + x2 --> y2 + h2
+- ...
+- h29 + x30 --> y30 + h30
