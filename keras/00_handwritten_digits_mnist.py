@@ -7,6 +7,8 @@ from keras import layers
 
 from keras.utils import to_categorical
 
+import matplotlib.pyplot as plt
+
 
 ##################################################################################################
 
@@ -19,6 +21,12 @@ print(train_images.shape)
 print('number of training labels:', len(train_labels))
 print('training label data type:', train_labels.dtype)
 print(train_labels)
+
+# displaying the 5th digit
+# https://matplotlib.org/3.3.3/api/_as_gen/matplotlib.pyplot.imshow.html
+digit = train_images[4]
+plt.imshow(digit, cmap=plt.cm.binary)
+plt.show()
 
 print(test_images.shape)
 print('number of test labels:', len(test_labels))
