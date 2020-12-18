@@ -62,7 +62,7 @@ train_labels = to_categorical(train_labels)
 test_labels  = to_categorical(test_labels)
 
 # train ("fit" the model to its training data)
-EPOCHS=10
+EPOCHS=5
 network.fit(train_images, train_labels, epochs=EPOCHS, batch_size=128)
 
 # https://www.tensorflow.org/api_docs/python/tf/keras/Model#evaluate
