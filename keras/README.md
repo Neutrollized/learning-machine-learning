@@ -98,6 +98,11 @@ Outputs:
 ```
 
 
-## 0x - Recognizing Handwritten Digits
+## 00 - Recognizing Handwritten Digits
 The "Hello world" of deep learning with Keras.  Taken from the MNIST dataset that comes with Keras
 - classify greyscale images of handwritten digits (28 x 28 px) into 10 categories (0-9)
+
+## 01 - Movie Review Classification
+Uses `binary_crossentropy` as the loss function.  The `relu` (rectified linar unit) is a function that zeroes out negative values while the last dense layer's output is based off of `sigmoid` which outputs between 0-1 (which is interpretted as a probability).
+
+The purpose of the 20 EPOCH training run was so that there's sufficient data to graph the training/validation accuracy (and loss).  You can see that the graph diverts at around the 3rd EPOCH, which suggests overfitting.  Overfitting is when the training is memorizing the training data due to over-optimizization, hence it performs relatively poorly when given the validation set to validate against.  And this is why when i8t's rerun, it's done with only 4 EPOCHS, becuase that's all this approach needed to reach the peak that this model is going to produce (~86%).

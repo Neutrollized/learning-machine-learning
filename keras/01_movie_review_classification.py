@@ -26,6 +26,8 @@ print("max index:", max([max(sequence) for sequence in train_data]))
 
 # and here's how you would decode a review back to English
 word_index = imdb.get_word_index()
+#print(word_index)
+
 reverse_word_index = dict(
   [(value, key) for (key, value) in word_index.items()])
 # indices are offset by 3 becuase 0, 1, 2 contain metadata
@@ -73,11 +75,24 @@ network.compile(optimizer='rmsprop',
                 loss='binary_crossentropy',
                 metrics=['accuracy'])
 
-x_val = x_train[:10000]
-partial_x_train = x_train[10000:]
+# shape is (25000,)
+# we're going to train on the first 15k (i.e [:-10000] = beginning up until the last 10k)
+# the last 10k will be used for validation (i.e. [-10000:] = starting from 10k from the end up until the end
+partial_x_train = x_train[:-10000]
+x_val           = x_train[-10000:]
+partial_y_train = y_train[:-10000]
+y_val           = y_train[-10000:]
 
-y_val = y_train[:10000]
+'''
+# another way to do the same thing but perhaps in an easier to read format is..
+# take your first 10k as the validation, and the left over for training
+# it doesn't matter if you make the head or tail of your dataset as the validation set
+# what matters is how you split them (commonly 70:30 training:validation split)
+x_val           = x_train[:10000]
+partial_x_train = x_train[10000:]
+y_val           = y_train[:10000]
 partial_y_train = y_train[10000:]
+'''
 
 
 #-----------------------
@@ -119,3 +134,12 @@ plt.xlabel('Epochs')
 plt.ylabel('Loss')
 plt.legend()
 plt.show()
+
+
+#------------------------------
+# rerun with less epochs
+#------------------------------
+
+network.fit(x_train, y_train, epochs=4, batch_size=512)
+results = network.evaluate(x_test, y_test)
+print(results[1])
