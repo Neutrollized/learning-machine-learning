@@ -16,7 +16,7 @@ import matplotlib.pyplot as plt
 # training set (images & labels)  and test set (images & labels)
 (train_images, train_labels), (test_images, test_labels) = mnist.load_data()
 
-# images come in as unint8, or unsigned 8-bit integers (i.e. 2^8 = 256 or [0, 255])
+# images come in as uint8, or unsigned 8-bit integers (i.e. 2^8 = 256 or [0, 255])
 print(train_images.shape)
 print('number of training labels:', len(train_labels))
 print('training label data type:', train_labels.dtype)
@@ -62,7 +62,7 @@ train_labels = to_categorical(train_labels)
 test_labels  = to_categorical(test_labels)
 
 # train ("fit" the model to its training data)
-EPOCHS=5
+EPOCHS = 5
 network.fit(train_images, train_labels, epochs=EPOCHS, batch_size=128)
 
 # https://www.tensorflow.org/api_docs/python/tf/keras/Model#evaluate
