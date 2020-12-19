@@ -41,6 +41,10 @@ print(train_labels[0])
 # preparing the data
 #----------------------------------
 
+# this function one-hot encodes the sequence of word indices in a review
+# for example train_data[0] will have its indices one-hot encoded
+# turning it into a 10k-dimensional vector of 0's and the indices of the
+# words used would be 1's
 def vectorize_sequences(sequences, dimension=10000):
   results = np.zeros((len(sequences), dimension))
   for i, sequence in enumerate(sequences):
@@ -55,3 +59,63 @@ print(x_train[0])
 y_train = np.asarray(train_labels).astype('float32')
 y_test  = np.asarray(test_labels).astype('float32')
 
+
+#---------------------------
+# building model
+#---------------------------
+
+network = models.Sequential()
+network.add(layers.Dense(16, activation='relu', input_shape=(10000,)))
+network.add(layers.Dense(16, activation='relu'))
+network.add(layers.Dense(1, activation='sigmoid'))
+
+network.compile(optimizer='rmsprop',
+                loss='binary_crossentropy',
+                metrics=['accuracy'])
+
+x_val = x_train[:10000]
+partial_x_train = x_train[10000:]
+
+y_val = y_train[:10000]
+partial_y_train = y_train[10000:]
+
+
+#-----------------------
+# training model
+#-----------------------
+
+EPOCHS = 20
+history = network.fit(partial_x_train,
+                      partial_y_train,
+                      epochs=EPOCHS,
+                      batch_size=512,
+                      validation_data=(x_val, y_val))
+
+history_dict = history.history
+print(history_dict.keys())
+
+loss_values = history_dict['loss']
+val_loss_values = history_dict['val_loss']
+
+epochs = range(1, len(history_dict['accuracy']) + 1)
+
+# bo = blue dot, b = blue line
+plt.plot(epochs, loss_values, 'bo', label='Training loss')
+plt.plot(epochs, val_loss_values, 'b', label='Validation loss')
+plt.title('Training and validation loss')
+plt.xlabel('Epochs')
+plt.ylabel('Loss')
+plt.legend()
+plt.show()
+
+acc_values = history_dict['accuracy']
+val_acc_values = history_dict['val_accuracy']
+
+plt.clf() # clears the figure
+plt.plot(epochs, acc_values, 'bo', label='Training acc')
+plt.plot(epochs, val_acc_values, 'b', label='Validation acc')
+plt.title('Training and validation accuracy')
+plt.xlabel('Epochs')
+plt.ylabel('Loss')
+plt.legend()
+plt.show()
