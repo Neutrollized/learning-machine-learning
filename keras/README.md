@@ -121,6 +121,8 @@ Dealing with prices of poses a problem: inflation.  You can't just keep feeding 
 
 The neural network here will typically end with a single unit and no activation because it's predicting a scalar value and you don't want to put any restrictions as you would with a `sigmoid` or `softmax`.
 
+*Mean squared error* (MSE) and *mean absolute error* (MAE) are also commonly used loss functions and metrics used in regression problems, respectively.
+
 #### Feature-wise Normalization
 For each feature/column in the input data:
 - subtract mean of the feature
@@ -135,3 +137,13 @@ test_data -= mean
 test_data /= std
 ```
 NOTE: even when normalizing test data, it should be computed using training data!
+
+#### K-fold Cross-validation
+Useed when you have few data points (i.e. small training dataset).  Normally (say you have a dataset with 10k entries), you would split it into a training and test (70:30 ratio), and with the training you'd divide that further into the actual training portion and a validation portion (i.e. out of the 7k training dataset, you might set aside 1k for validation use).  With a sufficiently large training dataset, this works well, but what if you have a small dataset (say, 500)?
+
+When you have a small dataset, you're going to have a much higher variance in your validation scores as your sample size is smaller, so the way to handle this is use **K-fold cross-validation**.  What you do is you split your training dataset into K-paritions/folds (say, K=5), and then you would would do 5 runs on this data with a different partition actiing as the validation dataset each time, and then at the end your validation score would be the average validation score of your 5 runs.
+
+You don't want to set it too high since you're going to be running your EPOCHS on for each fold (i.e. if K=10, EPOCHS=500, you're doing 5000 EPOCHS in total).  Typical K-values are 3-6.
+
+With k=5, I'm getting an avg validation MAE of ~2.5 and actual test MAE of ~2.75, and you might think that's pretty good/low, until you realize that the prices themselves are in the thousands (i.e. you're off by ~$2.75k) and the house prices back in the mid-1970's were in the 10k-50k range so being off by $2.75k is actually quite a bit... 
+
