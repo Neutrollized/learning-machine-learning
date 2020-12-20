@@ -137,12 +137,11 @@ plt.show()
 
 # after playing with some numbers/settings,
 # I found the following model to give me slightly better Test MAE score
-def build_model():
+# over the one initially used to evaluate the model
+def build_model_final():
   model = models.Sequential()
   model.add(layers.Dense(128, activation='relu',
                          input_shape=(train_data.shape[1],)))
-  model.add(layers.Dense(128, activation='relu'))
-  model.add(layers.Dense(128, activation='relu'))
   model.add(layers.Dense(1))
   model.compile(optimizer='rmsprop',
                 loss='mse',
@@ -153,7 +152,7 @@ def build_model():
 # so we're going to cap it at 80 and run fit()/train on the entire dataset
 EPOCHS = 80
 
-model = build_model()
+model = build_model_final()
 model.fit(train_data, train_targets,
           epochs=EPOCHS, batch_size=16)
 test_mse_score, test_mae_score = model.evaluate(test_data, test_targets)

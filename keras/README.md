@@ -147,5 +147,7 @@ You don't want to set it too high since you're going to be running your EPOCHS o
 
 **TL; DR** - K-fold cross-validation is a great way to reliably evaluate a model when you have little data
 
-With k=5, I'm getting an avg validation MAE of ~2.5 and actual test MAE of ~2.75, and you might think that's pretty good/low, until you realize that the prices themselves are in the thousands (i.e. you're off by ~$2.75k) and the house prices back in the mid-1970's were in the 10k-50k range so being off by $2.75k is actually quite a bit... 
+**TIP:** if you have little training data, avoid using too many hidden layers (stay with 1-2) as too many layers when you have little data will often lead to severe overfitting
+
+With k=5, I'm getting an avg validation MAE of ~2.45 and actual test MAE of ~2.7 (built using a model with only 1 hidden layer), and you might think that's pretty good/low, until you realize that the prices themselves are in the thousands (i.e. you're off by ~$2.7k) and the house prices back in the mid-1970's were in the 10k-50k range so being off by $2.7k is actually quite a bit... 
 
