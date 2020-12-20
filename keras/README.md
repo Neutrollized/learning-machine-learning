@@ -119,8 +119,10 @@ If you need to classify large amount of categories, be mindful not to make your 
 ## 03 - House Price Regression
 Dealing with prices of poses a problem: inflation.  You can't just keep feeding your neural network numbers without taking into consideration their ranges.  The solution to this is to do **feature-wise normalization**.
 
+The neural network here will typically end with a single unit and no activation because it's predicting a scalar value and you don't want to put any restrictions as you would with a `sigmoid` or `softmax`.
+
 #### Feature-wise Normalization
-For column in the input data matrix:
+For each feature/column in the input data:
 - subtract mean of the feature
 - divide by standard deviation
 This will make it so that the feature is centered around 0 and has a *unit standard deviation*.  Here's an example of what that code might look like:
@@ -132,3 +134,4 @@ train_data /= std
 test_data -= mean
 test_data /= std
 ```
+NOTE: even when normalizing test data, it should be computed using training data!

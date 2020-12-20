@@ -27,3 +27,31 @@ print(train_labels[0])  # price of house in 1000's (this is in mid-1970s)
 #----------------------------
 # preparing the data
 #----------------------------
+
+mean = train_data.mean(axis=0)
+print("mean:", mean)
+train_data -= mean
+std = train_data.std(axis=0)
+print("std deviation:", std)
+train_data /= std
+test_data -= mean
+test_data /= std
+# data should be normalized now
+print("normalized training data:", train_data)
+print("normalized test data:", test_data)
+
+
+#------------------------
+# building model
+#------------------------
+
+def build_model():
+  model = models.Sequential()
+  model.add(layers.Dense(64, activation='relu',
+                         input_shape=(train_data.shape[1],)))
+  model.add(layers.Dense(64, activation='relu'))
+  model.add(layers.Dense(1))
+  model.compile(optimizer='rmsprop',
+                loss='mse',
+                metrics=['mae'])
+  return model
