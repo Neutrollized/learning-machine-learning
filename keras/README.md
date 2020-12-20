@@ -145,5 +145,7 @@ When you have a small dataset, you're going to have a much higher variance in yo
 
 You don't want to set it too high since you're going to be running your EPOCHS on for each fold (i.e. if K=10, EPOCHS=500, you're doing 5000 EPOCHS in total).  Typical K-values are 3-6.
 
+**TL; DR** - K-fold cross-validation is a great way to reliably evaluate a model when you have little data
+
 With k=5, I'm getting an avg validation MAE of ~2.5 and actual test MAE of ~2.75, and you might think that's pretty good/low, until you realize that the prices themselves are in the thousands (i.e. you're off by ~$2.75k) and the house prices back in the mid-1970's were in the 10k-50k range so being off by $2.75k is actually quite a bit... 
 
