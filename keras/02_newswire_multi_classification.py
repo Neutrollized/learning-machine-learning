@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from keras.datasets import imdb
+from keras.datasets import reuters
 
 from keras import models
 from keras import layers
@@ -15,9 +15,10 @@ import numpy as np
 
 # the argument num_words means you'll keep only the top 10k most frequently
 # occurring words in the training data
-(train_data, train_labels), (test_data, test_labels) = imdb.load_data(num_words=10000)
+(train_data, train_labels), (test_data, test_labels) = reuters.load_data(num_words=10000)
 
 print(train_data.shape)
+print(test_data.shape)
 
 # each review (train_data) is a list of word indices
 print(train_data[0])
@@ -25,7 +26,7 @@ print(train_data[0])
 print("max index:", max([max(sequence) for sequence in train_data]))
 
 # and here's how you would decode a review back to English
-word_index = imdb.get_word_index()
+word_index = reuters.get_word_index()
 #print(word_index)
 
 reverse_word_index = dict(
@@ -35,7 +36,8 @@ decoded_review = ' '.join(
   [reverse_word_index.get(i - 3, '?') for i in train_data[0]])
 print(decoded_review)
 
-# each label is a 0 negative review, 1 is a positive
+# there are 46 different topics
+# each label (0-45) is associated with a different topic
 print(train_labels[0])
 
 
@@ -56,10 +58,17 @@ def vectorize_sequences(sequences, dimension=10000):
 x_train = vectorize_sequences(train_data)
 x_test  = vectorize_sequences(test_data)
 
-print(x_train[0])
 
-y_train = np.asarray(train_labels).astype('float32')
-y_test  = np.asarray(test_labels).astype('float32')
+def one_hot(labels, dimension=46):
+  results = np.zeros((len(labels), dimension))
+  for i, label in enumerate(labels):
+    results[i, label] = 1.
+  return results
+
+one_hot_train_labels = one_hot(train_labels)
+one_hot_test_labels  = one_hot(test_labels)
+
+print(one_hot_train_labels[0])
 
 
 #---------------------------
@@ -67,32 +76,19 @@ y_test  = np.asarray(test_labels).astype('float32')
 #---------------------------
 
 network = models.Sequential()
-network.add(layers.Dense(16, activation='relu', input_shape=(10000,)))
-network.add(layers.Dense(16, activation='relu'))
-network.add(layers.Dense(1, activation='sigmoid'))
+network.add(layers.Dense(64, activation='relu', input_shape=(10000,)))
+network.add(layers.Dense(64, activation='relu'))
+network.add(layers.Dense(46, activation='softmax'))
 
 network.compile(optimizer='rmsprop',
-                loss='binary_crossentropy',
+                loss='categorical_crossentropy',
                 metrics=['accuracy'])
 
-# shape is (25000,)
-# we're going to train on the first 15k (i.e [:-10000] = beginning up until the last 10k)
-# the last 10k will be used for validation (i.e. [-10000:] = starting from 10k from the end up until the end
-partial_x_train = x_train[:-10000]
-x_val           = x_train[-10000:]
-partial_y_train = y_train[:-10000]
-y_val           = y_train[-10000:]
-
-'''
-# another way to do the same thing but perhaps in an easier to read format is..
-# take your first 10k as the validation, and the left over for training
-# it doesn't matter if you make the head or tail of your dataset as the validation set
-# what matters is how you split them (commonly 70:30 training:validation split)
-x_val           = x_train[:10000]
-partial_x_train = x_train[10000:]
-y_val           = y_train[:10000]
-partial_y_train = y_train[10000:]
-'''
+# shape is (8982,)
+partial_x_train = x_train[:-1000]
+x_val           = x_train[-1000:]
+partial_y_train = one_hot_train_labels[:-1000]
+y_val           = one_hot_train_labels[-1000:]
 
 
 #-----------------------
@@ -103,7 +99,7 @@ EPOCHS = 20
 history = network.fit(partial_x_train,
                       partial_y_train,
                       epochs=EPOCHS,
-                      batch_size=512,
+                      batch_size=256,
                       validation_data=(x_val, y_val))
 
 history_dict = history.history
@@ -140,10 +136,20 @@ plt.show()
 # rerun with less epochs
 #------------------------------
 
-network.fit(x_train, y_train, epochs=4, batch_size=512)
+network.fit(partial_x_train, partial_y_train, epochs=10, batch_size=512)
 # https://www.tensorflow.org/api_docs/python/tf/keras/Model#evaluate
-results = network.evaluate(x_test, y_test)
+results = network.evaluate(x_test, one_hot_test_labels)
 print(results[1])	# returns loss and metric (accuracy) values
 
-# apply trained network to test data to see the likely hood of it being positive
-print(network.predict(x_test))
+# apply trained network to test data to see the likely hood it being each of the 46 categories
+prediction = network.predict(x_test)
+print(prediction)
+
+# because each row is a different probablility vector for each piece of input data
+# here we'll print the winning probability (confidence) percentage of each row
+#
+# NOTE: 0 should refer to the rows and 1 should refer to the columns,
+#       so why is axis=1 here to get the max value of each row?
+#       think of it as .sum(axis=0) which sums along the rows (producing column totals)
+#       (it's fucked up, I know...)
+print(np.amax(prediction, axis=1))

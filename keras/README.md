@@ -106,3 +106,8 @@ The "Hello world" of deep learning with Keras.  Taken from the MNIST dataset tha
 Uses `binary_crossentropy` as the loss function.  The `relu` (rectified linar unit) is a function that zeroes out negative values while the last dense layer's output is based off of `sigmoid` which outputs between 0-1 (which is interpretted as a probability).
 
 The purpose of the 20 EPOCH training run was so that there's sufficient data to graph the training/validation accuracy (and loss).  You can see that the graph diverts at around the 3rd EPOCH, which suggests overfitting.  Overfitting is when the training is memorizing the training data due to over-optimizization, hence it performs relatively poorly when given the validation set to validate against.  And this is why when i8t's rerun, it's done with only 4 EPOCHS, becuase that's all this approach needed to reach the peak that this model is going to produce (~86%).
+
+## 02 - Newswire Multi-classification
+Minor changes over binary classification -- most notably the use of `softmax` in the final layer, which is required to produce a probability of each of the classes (the sum of all the probabilities of all the classes should equal to 1.
+
+
