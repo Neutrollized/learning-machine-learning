@@ -107,7 +107,28 @@ Uses `binary_crossentropy` as the loss function.  The `relu` (rectified linar un
 
 The purpose of the 20 EPOCH training run was so that there's sufficient data to graph the training/validation accuracy (and loss).  You can see that the graph diverts at around the 3rd EPOCH, which suggests overfitting.  Overfitting is when the training is memorizing the training data due to over-optimizization, hence it performs relatively poorly when given the validation set to validate against.  And this is why when i8t's rerun, it's done with only 4 EPOCHS, becuase that's all this approach needed to reach the peak that this model is going to produce (~86%).
 
-## 02 - Newswire Multi-classification
+## 02 - Newswire Multiclass Classification
 Minor changes over binary classification -- most notably the use of `softmax` in the final layer, which is required to produce a probability of each of the classes (the sum of all the probabilities of all the classes should equal to 1.
 
+There are two ways to handle labels multiclass classification:
+- one-hot encode the labels + use `categorical_crossentropy` as the loss function
+- encoding the labels as integers + use `sparse_categorical_crossentropy` as the loss function
 
+If you need to classify large amount of categories, be mindful not to make your intermediate layers too small or you'll end up compressing the information into a space that is too low dimension which will decrease your model's accuracy significantly.
+
+## 03 - House Price Regression
+Dealing with prices of poses a problem: inflation.  You can't just keep feeding your neural network numbers without taking into consideration their ranges.  The solution to this is to do **feature-wise normalization**.
+
+#### Feature-wise Normalization
+For column in the input data matrix:
+- subtract mean of the feature
+- divide by standard deviation
+This will make it so that the feature is centered around 0 and has a *unit standard deviation*.  Here's an example of what that code might look like:
+```
+mean = train_data.mean(axis=0)
+train_data -= mean
+std = train_data.std(axis=0)
+train_data /= std
+test_data -= mean
+test_data /= std
+```

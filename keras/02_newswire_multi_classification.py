@@ -143,7 +143,7 @@ print(results[1])	# returns loss and metric (accuracy) values
 
 # apply trained network to test data to see the likely hood it being each of the 46 categories
 prediction = network.predict(x_test)
-print(prediction)
+#print(prediction)
 
 # because each row is a different probablility vector for each piece of input data
 # here we'll print the winning probability (confidence) percentage of each row
