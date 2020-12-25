@@ -108,7 +108,7 @@ print(history_dict.keys())
 loss_values = history_dict['loss']
 val_loss_values = history_dict['val_loss']
 
-epochs = range(1, len(history_dict['accuracy']) + 1)
+epochs = range(1, len(loss_values) + 1)
 
 # bo = blue dot, b = blue line
 plt.plot(epochs, loss_values, 'bo', label='Training loss')
