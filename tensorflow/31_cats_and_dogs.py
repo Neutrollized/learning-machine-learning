@@ -176,7 +176,7 @@ print(model.summary())
 # but you'll be getting much better results given now that you have augmented images to train on
 EPOCHS = 80
 
-history = model.fit_generator(
+history = model.fit(
   train_data_gen,
   steps_per_epoch=int(np.ceil(total_train / float(BATCH_SIZE))),
   epochs=EPOCHS,

@@ -135,7 +135,7 @@ print(model.summary())
 EPOCHS = 100
 
 # tip: can use the .n to get the count for the DirectoryIterator object
-history = model.fit_generator(
+history = model.fit(
   train_data_gen,
   steps_per_epoch=int(np.ceil(train_data_gen.n / float(BATCH_SIZE))),
   epochs=EPOCHS,

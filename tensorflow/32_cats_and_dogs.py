@@ -137,7 +137,7 @@ print(model.summary())
 # this is a clear sign of over-fitting
 EPOCHS = 50
 
-history = model.fit_generator(
+history = model.fit(
   train_data_gen,
   steps_per_epoch=int(np.ceil(total_train / float(BATCH_SIZE))),
   epochs=EPOCHS,
