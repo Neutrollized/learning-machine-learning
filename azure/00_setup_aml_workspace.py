@@ -17,4 +17,4 @@ ws.write_config(path="/Users/glenyu", file_name="ws_config.json")
 
 
 # once you have your workspace config, you can load it for future work
-# ws = Workspace.from_config(path="/Users/glenyu/ws_config.json")
+# ws = Workspace.from_config(path="/Users/glenyu/.azureml/ws_config.json")
