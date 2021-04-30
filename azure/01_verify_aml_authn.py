@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import os
+import json
 from azureml.core import Workspace
 from azureml.core.authentication import ServicePrincipalAuthentication
 

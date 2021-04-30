@@ -15,4 +15,5 @@ Creating a workspace will create the following (in addition to the resource grou
 
 ### Additional Resources
 - [Authentication in Azure ML](https://aka.ms/aml-notebook-auth)
-- [YouTube: Getting Started with Azure Machine Learning](https://www.youtube.com/watch?v=GBDSBInvz08)
+- [YouTube: Getting Started with Azure Machine Learning](https://www.youtube.com/watch?v=GBDSBInvz08) <-- example is outdated, but video still useful to show workflow
+- [Azure Machine Learning Examples](https://github.com/Azure/azureml-examples)
