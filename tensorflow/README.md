@@ -12,6 +12,7 @@ I also recommend using [`pyenv`](https://realpython.com/intro-to-pyenv/) to setu
 - [**tensorflow-datasets**](https://blog.tensorflow.org/2019/02/introducing-tensorflow-datasets.html)
 - [**seaborn**](https://seaborn.pydata.org/) (Auto MPG example)
 - [**tensorflow_hub**](https://tfhub.dev/)
+- **opencv-python** (`import cv2`)
 
 `pip3 install tensorflow matplotlib scikit-learn tensorflow-datasets seaborn`
 

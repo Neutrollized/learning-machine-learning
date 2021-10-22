@@ -3,7 +3,8 @@
 ###########################################################
 #
 # Fashion MNIST with Convolution Neural Networks (CNNs)
-# with 512 neurons & callbacks
+# with convolution
+# with 256 neurons
 #
 ###########################################################
 
@@ -89,18 +90,9 @@ model = tf.keras.Sequential([
     tf.keras.layers.Conv2D(64, (3,3), padding='same', activation=tf.nn.relu),
     tf.keras.layers.MaxPooling2D((2, 2), strides=2),
     tf.keras.layers.Flatten(),
-    tf.keras.layers.Dense(512, activation=tf.nn.relu),
+    tf.keras.layers.Dense(256, activation=tf.nn.relu),
     tf.keras.layers.Dense(10, activation=tf.nn.softmax)
 ])
-
-# define callback function
-class myCallback(tf.keras.callbacks.Callback):
-  def on_epoch_end(self, epoch, logs={}):
-    if(logs.get('accuracy')>0.93):
-      print("\nReached 93% accuracy so cancelling training!")
-      self.model.stop_training = True
-
-callbacks = myCallback()
 
 # compile model
 model.compile(optimizer='adam',
@@ -116,10 +108,7 @@ test_dataset = test_dataset.cache().batch(BATCH_SIZE)
 
 # epoch is the number of complete passes through the training set
 # more passes = better accuracy, but requires more training time, obvs
-model.fit(train_dataset,
-          epochs=5,
-          steps_per_epoch=math.ceil(num_train_examples/BATCH_SIZE),
-          callbacks=[callbacks])
+model.fit(train_dataset, epochs=5, steps_per_epoch=math.ceil(num_train_examples/BATCH_SIZE))
 
 #--------------------------------------
 # evaluate accuracy
