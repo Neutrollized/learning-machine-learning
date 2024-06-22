@@ -1,0 +1,37 @@
+import tensorflow_gnn as tfgnn
+from tensorflow_gnn.models import mt_albis
+
+def model_fn(graph_tensor_spec: tfgnn.GraphTensorSpec):
+  ""Builds a GNN as a Keras model."""
+  graph = inputs = tf.keras.Input(type_spec=graph_tensor_spec)
+
+  # Encode input features (callback omitted for brevity).
+  graph = tfgnn.keras.layers.MapFeatures(
+    node_sets_fn=set_initial_node_states)(graph)
+
+  # For each round of message passing...
+  for _ in range(2):
+    # ... create and apply a Keras layer.
+    graph = mt_albis.MtAlbisGraphUpdate(
+      units=128, message_dim=64,
+      attention_type="none", simple_conv_reduce_type="mean",
+      normalization_type="layer", next_state_type="residual",
+      state_dropout_rate=0.2, l2_regularization=1e-5,
+    )(graph)
+
+  return tf.keras.Model(inputs, graph)
+
+
+from tensorflow_gnn import runnero
+
+runner.run(
+  task=runner.RootNodeBinaryClassification("papers", ...),
+  model_fn=model_fn,
+  trainer=runner.KerasTrainer(tf.distribute.MirroredStrategy(), model_dir="/tmp/model"),
+  optimizer_fn=tf.keras.optimizers.Adam,
+  epochs=10,
+  global_batch_size=128,
+  train_ds_provider=runner.TFRecordDatasetProvider("/tmp/train*"),
+  train_ds_provider=runner.TFRecordDatasetProvider("/tmp/validation*"),
+  gtspec=...,
+)
